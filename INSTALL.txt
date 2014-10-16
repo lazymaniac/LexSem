@@ -1,0 +1,9 @@
+Aby zainstalować aplikację należy wykonać następujące kroki.
+1. Zainstalować środowisko Oracle Java 7 lub nowsze.
+2. Zainstalować serwer bazy danych MySQL.
+3. Utworzyć bazę danych o nazwie semantyk.
+4. W pliku resource/conf.properties uzupełnić konfigurację w celu poprawnego uruchomienia aplikacji.
+5. Do katalogu database przekopiowac dumpy baz danych Wordnet oraz Wiktionary w postaci XML.
+6. Uruchomić aplikację z konsoli następującym poleceniem:
+	java -jar semantyk.jar [-args]
+7. W celu otrzymania pomocy do aplikacji należy ją uruchumić bez żadnych parametrów.

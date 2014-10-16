@@ -1,0 +1,51 @@
+<project nazwa="WNParser" default="dist" basedir=".">
+    <description>
+        WNParser build file.
+    </description>
+    <!-- zmienne globalne -->
+    <property nazwa="src" location="src"/>
+    <property nazwa="build" location="build"/>
+    <property nazwa="output" location="output"/>
+    <property nazwa="database" location="database"/>
+    <property nazwa="docs" location="docs"/>
+    <property nazwa="bin" location="bin"/>
+
+    <target nazwa="init" description="Stwórz foldery">
+        <tstamp/>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${output}"/>
+        <mkdir dir="${database}"/>
+        <mkdir dir="${docs}"/>
+    </target>
+
+    <target nazwa="compile" depends="init" description="Kompiluje źródła">
+        <javac srcdir="${src}" destdir="${build}"/>
+    </target>
+
+    <target nazwa="dist" depends="compile" description="Generuje plik jar">
+        <jar jarfile="WNParser-${DSTAMP}.jar" basedir="${build}">
+            <manifest>
+                <attribute nazwa="Main-Class" value="com.semantyk.WNMain.WNPMain"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target nazwa="docs" depends="dist">
+        <javadoc packagenames="com.semantyk.WNParser" sourcepath="${src}/com/java/*"
+                 destdir="${docs}/API" author="true" version="true" windowtitle="Parser documentation">
+            <fileset dir="${src}">
+                <include nazwa="**"/>
+            </fileset>
+        </javadoc>
+    </target>
+
+    <target nazwa="clean" description="usuń zbędne foldery">
+        <delete dir="${build}"/>
+        <delete dir="${bin}"/>
+    </target>
+
+    <target nazwa="run">
+        <java jar="WNParser-${DSTAMP}.jar" fork="true"/>
+    </target>
+</project>
+
