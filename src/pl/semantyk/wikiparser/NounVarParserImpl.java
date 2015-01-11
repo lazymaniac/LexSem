@@ -138,7 +138,7 @@ public class NounVarParserImpl<T> implements VarietyParser<T> {
     private CasesVar parsujProstaOdmiane(NounVar rzeczOdm, List<String> data, NumberType liczba) {
         CasesVar przypadki = new CasesVar();
 
-        przypadki.setNounVar(rzeczOdm);
+        przypadki.setNounVar(rzeczOdm.getId());
 
         for (String s : data) {
             if (s.startsWith("|Mianownik " + liczba.getValue())) {
@@ -178,7 +178,7 @@ public class NounVarParserImpl<T> implements VarietyParser<T> {
 
         CasesVar przypadki = new CasesVar();
 
-        przypadki.setNounVar(rzeczOdm);
+        przypadki.setNounVar(rzeczOdm.getId());
 
         String temat = "";
         if (data[begIdx + 1].equals("jak")) {

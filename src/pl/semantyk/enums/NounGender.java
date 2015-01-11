@@ -1,7 +1,7 @@
 package pl.semantyk.enums;
 
 /**
- * @author Sebastian Fabisz
+
  *         <p/>
  *         Źródło wikipedia.pl
  *         Rzeczownik w liczbie pojedynczej występuje w rodzaju męskim, żeńskim lub nijakim.
@@ -18,6 +18,8 @@ package pl.semantyk.enums;
  *         W liczbie mnogiej rzeczownik można przyporządkować do jednego z dwóch rodzajów gramatycznych:
  *         męskoosobowego – przybierają go te rzeczowniki osobowe, które w liczbie pojedynczej są rodzaju męskiego. W mianowniku liczby mnogiej łączą się z zaimkiem ci (np.: ci mądrzy filozofowie, ci znudzeni kochankowie). Mają one taką sama formę w bierniku i dopełniaczu, np.: D. nie ma mądrych filozofów, B. widzę mądrych filozofów.
  *         niemęskoosobowego – tu zaliczają się wszystkie pozostałe rzeczowniki, w mianowniku liczby mnogiej łączą się one z zaimkiem te (np.: te stracone złudzenia, te czarne charaktery, te nieukończone partytury). Rzeczowniki te maja taką samą formę w mianowniku i bierniku, np.: M. te nieukończone partytury, B. widzę nieukończone partytury[2].
+ *
+ * @author Sebastian Fabisz
  */
 public enum NounGender {
 

@@ -6,7 +6,11 @@ public enum CommonCode implements ErrorCode {
 
     ILLEGAL_ARGUMENT(202),
 
-    INTERRUPTED_THREAD(203);
+    INTERRUPTED_THREAD(203),
+
+    ILLEGAL_ACCESS_EXCEPTION(204),
+
+    INSTANTIATION_EXCEPTION(205);
 
     private CommonCode(int code) {
         this.code = code;

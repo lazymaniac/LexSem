@@ -1,34 +1,39 @@
 package pl.semantyk.domain;
 
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
 import pl.semantyk.wikiparser.WikiNumeration;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
 @Table(name = "FRAZEOLOGIE")
 public class Phraseology implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -1117875138075233478L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_FRAZOLOGIA", nullable = false, unique = true)
-    private Integer id;
+    @Column(name = "ID_FRAZOLOGIA")
+    private Integer id = IdGenerator.getId(this.getClass());
 
-    @Transient
     private WikiNumeration numeration;
 
     @Column(name = "FRAZEOLOGIA")
     private String phraseology;
 
-    @ManyToOne(targetEntity = Importance.class, optional = false)
-    @JoinColumn(name = "ID_ZNACZENIE")
-    private Importance importance;
+    @Column(name = "ID_ZNACZENIE")
+    private Integer importance;
 
     public Phraseology(WikiNumeration numeration, String phraseology) {
         this.numeration = numeration;
         this.phraseology = phraseology;
+    }
+
+    public Phraseology(Integer id, String phraseology, Integer importance) {
+        this.id = id;
+        this.phraseology = phraseology;
+        this.importance = importance;
     }
 
     public Phraseology() {
@@ -58,33 +63,27 @@ public class Phraseology implements Serializable, Cloneable {
         this.phraseology = phraseology;
     }
 
-    public Importance getImportance() {
+    public Integer getImportance() {
         return importance;
     }
 
-    public void setImportance(Importance importance) {
+    public void setImportance(Integer importance) {
         this.importance = importance;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Phraseology)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Phraseology that = (Phraseology) o;
 
-        if (phraseology != null ? !phraseology.equals(that.phraseology) : that.phraseology != null) {
-            return false;
-        }
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
-        return !(numeration != null ? !numeration.equals(that.numeration) : that.numeration != null);
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (importance != null ? !importance.equals(that.importance) : that.importance != null) return false;
+        if (numeration != null ? !numeration.equals(that.numeration) : that.numeration != null) return false;
+        if (phraseology != null ? !phraseology.equals(that.phraseology) : that.phraseology != null) return false;
 
+        return true;
     }
 
     @Override
@@ -92,11 +91,18 @@ public class Phraseology implements Serializable, Cloneable {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (numeration != null ? numeration.hashCode() : 0);
         result = 31 * result + (phraseology != null ? phraseology.hashCode() : 0);
+        result = 31 * result + (importance != null ? importance.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "\nPhraseology {" + "\nid=" + id + ", \nnumeration=" + numeration + ", \nphraseology='" + phraseology + '\'' + '}';
+        final StringBuffer sb = new StringBuffer("Phraseology{");
+        sb.append("id=").append(id);
+        sb.append(", numeration=").append(numeration);
+        sb.append(", phraseology='").append(phraseology).append('\'');
+        sb.append(", importance=").append(importance);
+        sb.append('}');
+        return sb.toString();
     }
 }

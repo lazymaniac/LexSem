@@ -1,61 +1,72 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.enums.AdjectiveDegree;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
+import pl.semantyk.enums.AdjectiveDegree;
+
 @Table(name = "PRZYM_STOPIEN")
 public class AdjectiveDegreeVar implements Serializable, Cloneable {
 
-    private static final long serialVersionUID = -6597346253022582257L;
+	private static final long serialVersionUID = -6597346253022582257L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_PRZYM_STOP", nullable = false, unique = true)
-    private Integer id;
+	@Id
+	@Column(name = "ID_PRZYM_STOP")
+	private Integer id = IdGenerator.getId(this.getClass());
 
-    /**
-     * Stopień przymiotnika(zerowy, wyższy, najwyższy).
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "STOPIEN", nullable = false, length = 45)
-    private AdjectiveDegree degree;
+	/**
+	 * Stopień przymiotnika(zerowy, wyższy, najwyższy).
+	 */
+	@Column(name = "STOPIEN")
+	private AdjectiveDegree degree;
 
-    @OneToMany(targetEntity = CasesVar.class,
-            orphanRemoval = true,
-            mappedBy = "adjectiveDegreeVar",
-            cascade = CascadeType.ALL)
     private List<CasesVar> casesVar = new ArrayList<>();
 
-    @ManyToOne(targetEntity = AdjectiveVar.class, optional = false)
-    @JoinColumn(name = "ID_PRZYM_ODM")
-    private AdjectiveVar adjectiveVar;
+	@Column(name = "ID_PRZYM_ODM")
+	private Integer adjectiveVarId;
 
-    public AdjectiveDegreeVar(AdjectiveDegree stopien) {
-        this.degree = stopien;
-    }
+	public AdjectiveDegreeVar(final AdjectiveDegree stopien) {
+		degree = stopien;
+	}
 
-    public AdjectiveDegreeVar() {
-    }
+	public AdjectiveDegreeVar() {
+	}
 
-    public AdjectiveDegree getAdjectiveDegree() {
+	public AdjectiveDegree getAdjectiveDegree() {
+		return degree;
+	}
+
+	public void setAdjectiveDegree(final AdjectiveDegree degree) {
+		this.degree = degree;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(final Integer id) {
+		this.id = id;
+	}
+
+	public Integer getAdjectiveVar() {
+		return adjectiveVarId;
+	}
+
+	public void setAdjectiveVar(final Integer adjectiveVarId) {
+		this.adjectiveVarId = adjectiveVarId;
+	}
+
+    public AdjectiveDegree getDegree() {
         return degree;
     }
 
-    public void setAdjectiveDegree(AdjectiveDegree degree) {
+    public void setDegree(AdjectiveDegree degree) {
         this.degree = degree;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public List<CasesVar> getCasesVar() {
@@ -66,42 +77,48 @@ public class AdjectiveDegreeVar implements Serializable, Cloneable {
         this.casesVar = casesVar;
     }
 
-    public AdjectiveVar getAdjectiveVar() {
-        return adjectiveVar;
+    public Integer getAdjectiveVarId() {
+        return adjectiveVarId;
     }
 
-    public void setAdjectiveVar(AdjectiveVar adjectiveVar) {
-        this.adjectiveVar = adjectiveVar;
+    public void setAdjectiveVarId(Integer adjectiveVarId) {
+        this.adjectiveVarId = adjectiveVarId;
     }
 
-    public void addCasesVar(CasesVar cases) {
-        cases.setAdjectiveDegreeVar(this);
-        this.casesVar.add(cases);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        AdjectiveDegreeVar that = (AdjectiveDegreeVar) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (casesVar != null ? !casesVar.equals(that.casesVar) : that.casesVar != null) return false;
-        return degree == that.degree;
-
+    public void addCasesVar(final CasesVar cases) {
+        cases.setAdjectiveDegreeVar(this.getId());
+        casesVar.add(cases);
     }
 
     @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (degree != null ? degree.hashCode() : 0);
-        result = 31 * result + (casesVar != null ? casesVar.hashCode() : 0);
-        return result;
-    }
+	public boolean equals(final Object o) {
+		if (this == o)
+			return true;
+		if ((o == null) || (getClass() != o.getClass()))
+			return false;
+
+		AdjectiveDegreeVar that = (AdjectiveDegreeVar) o;
+
+		if (id != null ? !id.equals(that.id) : that.id != null)
+			return false;
+		return degree == that.degree;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = id != null ? id.hashCode() : 0;
+		result = (31 * result) + (degree != null ? degree.hashCode() : 0);
+		return result;
+	}
 
     @Override
     public String toString() {
-        return "AdjectiveDegreeVar{" + "casesVar=" + casesVar + ", degree=" + degree + ", id=" + id + '}';
+        final StringBuffer sb = new StringBuffer("AdjectiveDegreeVar{");
+        sb.append("id=").append(id);
+        sb.append(", degree=").append(degree);
+        sb.append(", adjectiveVarId=").append(adjectiveVarId);
+        sb.append('}');
+        return sb.toString();
     }
 }

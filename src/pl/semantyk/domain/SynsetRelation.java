@@ -1,46 +1,56 @@
 package pl.semantyk.domain;
 
-import javax.persistence.*;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Table;
 
 import java.io.Serializable;
 
-@Entity
 @Table(name = "RELACJA_SYNSETU")
 public class SynsetRelation implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -8714323640453453495L;
 
-    @EmbeddedId
-    private SynsetRelationId id;
+    @Column(name = "RODZIC")
+    private Integer parent;
 
-    @ManyToOne(targetEntity = RelationType.class,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "RELACJA")
+    @Column(name = "DZIECKO")
+    private Integer child;
+
+    @Column(name = "RELACJA")
     private RelationType relation;
 
-    @Column(name = "SPRAWDZONY", nullable = true)
+    @Column(name = "SPRAWDZONY")
     private Boolean checked;
 
     public SynsetRelation() {
     }
 
-	public SynsetRelation(SynsetRelationId id, RelationType relacja,
+	public SynsetRelation(Integer parent, Integer child, RelationType relacja,
 			Boolean sprawdzony) {
 		super();
-		this.id = id;
+		this.parent = parent;
+        this.child = child;
 		this.relation = relacja;
 		this.checked = sprawdzony;
 	}
 
-	public SynsetRelationId getId() {
-		return id;
-	}
+    public Integer getParent() {
+        return parent;
+    }
 
-	public void setId(SynsetRelationId id) {
-		this.id = id;
-	}
+    public void setParent(Integer parent) {
+        this.parent = parent;
+    }
 
-	public RelationType getRelation() {
+    public Integer getChild() {
+        return child;
+    }
+
+    public void setChild(Integer child) {
+        this.child = child;
+    }
+
+    public RelationType getRelation() {
 		return relation;
 	}
 
@@ -56,48 +66,38 @@ public class SynsetRelation implements Serializable, Cloneable {
 		this.checked = checked;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((relation == null) ? 0 : relation.hashCode());
-		result = prime * result
-				+ ((checked == null) ? 0 : checked.hashCode());
-		return result;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SynsetRelation other = (SynsetRelation) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (relation == null) {
-			if (other.relation != null)
-				return false;
-		} else if (!relation.equals(other.relation))
-			return false;
-		if (checked == null) {
-			if (other.checked != null)
-				return false;
-		} else if (!checked.equals(other.checked))
-			return false;
-		return true;
-	}
+        SynsetRelation that = (SynsetRelation) o;
 
-	@Override
-	public String toString() {
-		return "SynsetRelation [id=" + id + ", relation=" + relation
-				+ ", checked=" + checked + "]";
-	}
+        if (checked != null ? !checked.equals(that.checked) : that.checked != null) return false;
+        if (child != null ? !child.equals(that.child) : that.child != null) return false;
+        if (parent != null ? !parent.equals(that.parent) : that.parent != null) return false;
+        if (relation != null ? !relation.equals(that.relation) : that.relation != null) return false;
 
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = parent != null ? parent.hashCode() : 0;
+        result = 31 * result + (child != null ? child.hashCode() : 0);
+        result = 31 * result + (relation != null ? relation.hashCode() : 0);
+        result = 31 * result + (checked != null ? checked.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("SynsetRelation{");
+        sb.append("parent=").append(parent);
+        sb.append(", child=").append(child);
+        sb.append(", relation=").append(relation);
+        sb.append(", checked=").append(checked);
+        sb.append('}');
+        return sb.toString();
+    }
 }

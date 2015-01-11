@@ -3,9 +3,10 @@ package pl.semantyk.utils;
 import java.util.*;
 
 /**
- * @param <K> Typ klucza.
- * @param <V> Typ wartości.
- * @author Sebastian Fabisz Interfejs Map zainplementowny w sposób <wartość, wartość>.
+ * Map implemented in  <value, vlaue> manner.
+ * @param <K> Key type.
+ * @param <V> Value type.
+ * @author Sebastian Fabisz
  */
 public class WNMap<K, V> implements Map<K, V> {
 

@@ -1,22 +1,22 @@
 package pl.semantyk.domain;
 
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
 import pl.semantyk.enums.CasesType;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
 @Table(name = "PRZYPADKI")
 public class CasesVar implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 2963924627986179495L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_PRZYPADEK", nullable = false, unique = true)
-    private Integer id;
+    @Column(name = "ID_PRZYPADEK")
+    private Integer id = IdGenerator.getId(this.getClass());
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "TYP_ODMIANY")
     private CasesType typ;
 
@@ -41,13 +41,11 @@ public class CasesVar implements Serializable, Cloneable {
     @Column(name = "WOLACZ")
     private String wolacz;
 
-    @ManyToOne(targetEntity = NounVar.class, optional = true)
-    @JoinColumn(name = "ID_RZECZOWNIK_ODM")
-    private NounVar nounVar;
+    @Column(name = "ID_RZECZOWNIK_ODM")
+    private Integer nounVar;
 
-    @ManyToOne(targetEntity = AdjectiveDegreeVar.class, optional = true)
-    @JoinColumn(name = "ID_PRZYM_ODM")
-    private AdjectiveDegreeVar adjectiveDegreeVar;
+    @Column(name = "ID_PRZYM_ODM")
+    private Integer adjectiveDegreeVar;
 
     public CasesVar() {
     }
@@ -149,20 +147,20 @@ public class CasesVar implements Serializable, Cloneable {
         this.id = id;
     }
 
-    public NounVar getNounVar() {
+    public Integer getNounVar() {
         return nounVar;
     }
 
-    public void setNounVar(NounVar nounVar) {
+    public void setNounVar(Integer nounVar) {
         this.nounVar = nounVar;
     }
 
-    public AdjectiveDegreeVar getAdjectiveVar() {
+    public Integer getAdjectiveDegreeVar() {
         return adjectiveDegreeVar;
     }
 
-    public void setAdjectiveDegreeVar(AdjectiveDegreeVar degreeVar) {
-        this.adjectiveDegreeVar = degreeVar;
+    public void setAdjectiveDegreeVar(Integer adjectiveDegreeVar) {
+        this.adjectiveDegreeVar = adjectiveDegreeVar;
     }
 
     @Override
@@ -201,6 +199,19 @@ public class CasesVar implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "\nCasesVar{\n" + "wolacz='" + wolacz + '\'' + ", \nmiejscownik='" + miejscownik + '\'' + ", \nnarzednik='" + narzednik + '\'' + ", \nbiernik='" + biernik + '\'' + ", \ncelownik='" + celownik + '\'' + ", \ndopelniacz='" + dopelniacz + '\'' + ", \nmianownik='" + mianownik + '\'' + ", \ntyp=" + typ + ", \nid=" + id + '}';
+        final StringBuffer sb = new StringBuffer("CasesVar{");
+        sb.append("id=").append(id);
+        sb.append(", typ=").append(typ);
+        sb.append(", mianownik='").append(mianownik).append('\'');
+        sb.append(", dopelniacz='").append(dopelniacz).append('\'');
+        sb.append(", celownik='").append(celownik).append('\'');
+        sb.append(", biernik='").append(biernik).append('\'');
+        sb.append(", narzednik='").append(narzednik).append('\'');
+        sb.append(", miejscownik='").append(miejscownik).append('\'');
+        sb.append(", wolacz='").append(wolacz).append('\'');
+        sb.append(", nounVar=").append(nounVar);
+        sb.append(", adjectiveDegreeVar=").append(adjectiveDegreeVar);
+        sb.append('}');
+        return sb.toString();
     }
 }

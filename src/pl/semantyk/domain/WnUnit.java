@@ -1,23 +1,14 @@
 package pl.semantyk.domain;
 
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
-@Entity
-@Table(name = "JEDNOSTKA_WN", uniqueConstraints = { @UniqueConstraint(columnNames = "ID_JEDN_WN") })
+@Table(name = "JEDNOSTKA_WN")
 public class WnUnit implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -8158459942832026319L;
@@ -26,8 +17,7 @@ public class WnUnit implements Serializable, Cloneable {
 	 * Identyfikator encji,
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID_JEDN_WN", unique = true, nullable = false)
+	@Column(name = "ID_JEDN_WN")
 	private Integer id;
 
 	/**
@@ -54,22 +44,18 @@ public class WnUnit implements Serializable, Cloneable {
 	@Column(name = "WARIANT")
 	private Integer variant;
 
-	@OneToMany(mappedBy = "id.child", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<LexicalRel> children = new HashSet<>();
 
-	@OneToMany(mappedBy = "id.parent", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<LexicalRel> parents = new HashSet<>();
 
-	@ManyToOne(targetEntity = WikiUnit.class, optional = false)
-	@JoinColumn(name = "ID_JEDN_WIKI", nullable = false)
-	private WikiUnit wikiUnit;
+	@Column(name = "ID_JEDN_WIKI")
+	private Integer wikiUnit;
 
 	/**
 	 * Synset
 	 */
-	@ManyToOne(targetEntity = Synset.class, cascade = CascadeType.ALL, optional = true)
-	@JoinColumn(name = "ID_SYNSET")
-	private Synset synset;
+	@Column(name = "ID_SYNSET")
+	private Integer synset;
 
 	public WnUnit() {
 	}
@@ -139,23 +125,27 @@ public class WnUnit implements Serializable, Cloneable {
 		this.parents = parents;
 	}
 
-	public WikiUnit getWikiUnit() {
-		return wikiUnit;
-	}
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
 
-	public void setWikiUnit(WikiUnit wikiUnit) {
-		this.wikiUnit = wikiUnit;
-	}
+    public Integer getWikiUnit() {
+        return wikiUnit;
+    }
 
-	public Synset getSynset() {
-		return synset;
-	}
+    public void setWikiUnit(Integer wikiUnit) {
+        this.wikiUnit = wikiUnit;
+    }
 
-	public void setSynset(Synset synset) {
-		this.synset = synset;
-	}
+    public Integer getSynset() {
+        return synset;
+    }
 
-	@Override
+    public void setSynset(Integer synset) {
+        this.synset = synset;
+    }
+
+    @Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;

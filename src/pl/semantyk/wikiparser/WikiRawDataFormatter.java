@@ -16,8 +16,7 @@ import pl.semantyk.main.Dictionary;
 // TODO wyczyscic cala baze z referencji do wiki
 public class WikiRawDataFormatter {
 
-	private static final Logger LOG = Logger
-			.getLogger(WikiRawDataFormatter.class);
+	private static final Logger LOG = Logger.getLogger(WikiRawDataFormatter.class);
 
 	private int importancesBegIndex = -1;
 	private int varietiesBegIndex = -1;
@@ -47,7 +46,7 @@ public class WikiRawDataFormatter {
 	private final CognatesParser cognatesParser = new CognatesParser();
 	private final PhraseologyParser phraseologiesParser = new PhraseologyParser();
 
-	public WikiRawDataFormatter(Dictionary aDict) {
+	public WikiRawDataFormatter(final Dictionary aDict) {
 		dict = aDict;
 		rawUnits = new LinkedHashSet<>(dict.getRawWikiUnits());
 		formatedUnits = new LinkedHashSet<>();
@@ -56,12 +55,11 @@ public class WikiRawDataFormatter {
 	public void format() {
 		LOG.info("\n\n RawUnits size: " + rawUnits.size());
 
-		if (rawUnits != null && !rawUnits.isEmpty()) {
+		if ((rawUnits != null) && !rawUnits.isEmpty()) {
 			List<String> lines;
 
 			for (RawWikiUnit rawWikiUnit : rawUnits) {
-				if (StringUtils.isBlank(rawWikiUnit.getText())
-						|| rawWikiUnit.getTitle().equals("nie (być)")) {
+				if (StringUtils.isBlank(rawWikiUnit.getText()) || rawWikiUnit.getTitle().equals("nie (być)")) {
 					continue;
 				}
 
@@ -106,66 +104,50 @@ public class WikiRawDataFormatter {
 					}
 				}
 
-				if (importancesBegIndex > -1 && varietiesBegIndex > -1) {
-					importanceBlock = new ArrayList<>(lines.subList(
-							importancesBegIndex, varietiesBegIndex));
-				} else if (importancesBegIndex > -1 && varietiesBegIndex < 0) {
-					importanceBlock = new ArrayList<>(lines.subList(
-							importancesBegIndex, lines.size()));
+				if ((importancesBegIndex > -1) && (varietiesBegIndex > -1)) {
+					importanceBlock = new ArrayList<>(lines.subList(importancesBegIndex, varietiesBegIndex));
+				} else if ((importancesBegIndex > -1) && (varietiesBegIndex < 0)) {
+					importanceBlock = new ArrayList<>(lines.subList(importancesBegIndex, lines.size()));
 				}
 
-				if (varietiesBegIndex > -1 && examplesBegIndex > -1) {
-					varietiesBlock = new ArrayList<>(lines.subList(
-							varietiesBegIndex, examplesBegIndex));
-				} else if (varietiesBegIndex > -1 && examplesBegIndex < 0) {
-					varietiesBlock = new ArrayList<>(lines.subList(
-							varietiesBegIndex, lines.size()));
+				if ((varietiesBegIndex > -1) && (examplesBegIndex > -1)) {
+					varietiesBlock = new ArrayList<>(lines.subList(varietiesBegIndex, examplesBegIndex));
+				} else if ((varietiesBegIndex > -1) && (examplesBegIndex < 0)) {
+					varietiesBlock = new ArrayList<>(lines.subList(varietiesBegIndex, lines.size()));
 				}
 
-				if (examplesBegIndex > -1 && syntaxBegIndex > -1) {
-					examplesBlock = new ArrayList<>(lines.subList(
-							examplesBegIndex, syntaxBegIndex));
-				} else if (examplesBegIndex > -1 && syntaxBegIndex < 0) {
-					examplesBlock = new ArrayList<>(lines.subList(
-							examplesBegIndex, lines.size()));
+				if ((examplesBegIndex > -1) && (syntaxBegIndex > -1)) {
+					examplesBlock = new ArrayList<>(lines.subList(examplesBegIndex, syntaxBegIndex));
+				} else if ((examplesBegIndex > -1) && (syntaxBegIndex < 0)) {
+					examplesBlock = new ArrayList<>(lines.subList(examplesBegIndex, lines.size()));
 				}
 
-				if (collocationsBegIndex > -1 && synonymsBegIndex > -1) {
-					collocationsBlock = new ArrayList<>(lines.subList(
-							collocationsBegIndex, synonymsBegIndex));
-				} else if (collocationsBegIndex > -1 && synonymsBegIndex < 0) {
-					collocationsBlock = new ArrayList<>(lines.subList(
-							collocationsBegIndex, lines.size()));
+				if ((collocationsBegIndex > -1) && (synonymsBegIndex > -1)) {
+					collocationsBlock = new ArrayList<>(lines.subList(collocationsBegIndex, synonymsBegIndex));
+				} else if ((collocationsBegIndex > -1) && (synonymsBegIndex < 0)) {
+					collocationsBlock = new ArrayList<>(lines.subList(collocationsBegIndex, lines.size()));
 				}
 
-				if (synonymsBegIndex > -1 && antonymsBegIndex > -1) {
-					synonymsBlock = new ArrayList<>(lines.subList(
-							synonymsBegIndex, antonymsBegIndex));
-				} else if (synonymsBegIndex > -1 && antonymsBegIndex < 0) {
-					synonymsBlock = new ArrayList<>(lines.subList(
-							synonymsBegIndex, lines.size()));
+				if ((synonymsBegIndex > -1) && (antonymsBegIndex > -1)) {
+					synonymsBlock = new ArrayList<>(lines.subList(synonymsBegIndex, antonymsBegIndex));
+				} else if ((synonymsBegIndex > -1) && (antonymsBegIndex < 0)) {
+					synonymsBlock = new ArrayList<>(lines.subList(synonymsBegIndex, lines.size()));
 				}
 
-				if (antonymsBegIndex > -1 && cognatesBegIndex > -1) {
-					antonymsBlock = new ArrayList<>(lines.subList(
-							antonymsBegIndex, cognatesBegIndex));
-				} else if (antonymsBegIndex > -1 && cognatesBegIndex < 0) {
-					antonymsBlock = new ArrayList<>(lines.subList(
-							antonymsBegIndex, lines.size()));
+				if ((antonymsBegIndex > -1) && (cognatesBegIndex > -1)) {
+					antonymsBlock = new ArrayList<>(lines.subList(antonymsBegIndex, cognatesBegIndex));
+				} else if ((antonymsBegIndex > -1) && (cognatesBegIndex < 0)) {
+					antonymsBlock = new ArrayList<>(lines.subList(antonymsBegIndex, lines.size()));
 				}
 
-				if (cognatesBegIndex > -1 && phraseologiesBegIndex > -1) {
-					cognatesBlock = new ArrayList<>(lines.subList(
-							cognatesBegIndex, phraseologiesBegIndex));
-				} else if (cognatesBegIndex > -1 && phraseologiesBegIndex < 0) {
-					cognatesBlock = new ArrayList<>(lines.subList(
-							cognatesBegIndex, lines.size()));
+				if ((cognatesBegIndex > -1) && (phraseologiesBegIndex > -1)) {
+					cognatesBlock = new ArrayList<>(lines.subList(cognatesBegIndex, phraseologiesBegIndex));
+				} else if ((cognatesBegIndex > -1) && (phraseologiesBegIndex < 0)) {
+					cognatesBlock = new ArrayList<>(lines.subList(cognatesBegIndex, lines.size()));
 				}
 
-				if (phraseologiesBegIndex > -1
-						&& lines.size() > phraseologiesBegIndex) {
-					phraseologiesBlock = new ArrayList<>(lines.subList(
-							phraseologiesBegIndex, lines.size()));
+				if ((phraseologiesBegIndex > -1) && (lines.size() > phraseologiesBegIndex)) {
+					phraseologiesBlock = new ArrayList<>(lines.subList(phraseologiesBegIndex, lines.size()));
 				}
 
 				lines.clear();
@@ -234,16 +216,10 @@ public class WikiRawDataFormatter {
 	}
 
 	@SuppressWarnings("unused")
-	private void debugUnit(RawWikiUnit ru) {
+	private void debugUnit(final RawWikiUnit ru) {
 		if (ru.getTitle().equals("nie ma")) {
-			LOG.info("Znaczenia index: " + importancesBegIndex
-					+ "\nodmiana index: " + varietiesBegIndex
-					+ "\nprzykłady index: " + examplesBegIndex
-					+ "\nkolkacje index: " + collocationsBegIndex
-					+ "\nsynonimy index: " + synonymsBegIndex
-					+ "\nantonimy index: " + antonymsBegIndex
-					+ "\npokrewne index: " + cognatesBegIndex
-					+ "\nfrazeologia index: " + phraseologiesBegIndex);
+			LOG.info("Znaczenia index: " + importancesBegIndex + "\nodmiana index: " + varietiesBegIndex + "\nprzykłady index: " + examplesBegIndex + "\nkolkacje index: " + collocationsBegIndex
+					+ "\nsynonimy index: " + synonymsBegIndex + "\nantonimy index: " + antonymsBegIndex + "\npokrewne index: " + cognatesBegIndex + "\nfrazeologia index: " + phraseologiesBegIndex);
 			LOG.info("znaczenia list: " + importanceBlock.toString());
 			LOG.info("odmiana list: " + varietiesBlock.toString());
 			LOG.info("przyklady list: " + examplesBlock.toString());
@@ -268,4 +244,6 @@ public class WikiRawDataFormatter {
 	private Set<RawWikiUnit> rawUnits;
 	private Set<WikiUnit> formatedUnits;
 	private WikiUnit tempUnit;
+
+	private int wikiUnitIdCounter = 1;
 }

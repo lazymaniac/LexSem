@@ -21,8 +21,6 @@ public class AntonymsParser implements WikiRawParser {
         }
 
         if (!data.isEmpty()) {
-            // print(tempUnit.getNazwa() + " antonimy: " + data);
-
             for (String raw : data) {
                 List<WikiNumeration> numerations = numerationParser.parse(tempUnit, raw);
 
@@ -32,7 +30,6 @@ public class AntonymsParser implements WikiRawParser {
                     tempUnit.addAntonym(new Antonym(num, clean));
                 }
             }
-            // print("Antonimy parsed: " + tempUnit.getAntonimy());
         }
     }
 }

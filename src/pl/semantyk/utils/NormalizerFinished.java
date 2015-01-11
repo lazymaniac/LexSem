@@ -1,7 +1,7 @@
 package pl.semantyk.utils;
 
 /**
- * Globalny semafor sygnalizujacy zakonczenie procesu normalizacji danych wczytanych z bazy WordNet'u.
+ * Global semaphore.
  */
 public class NormalizerFinished {
 }

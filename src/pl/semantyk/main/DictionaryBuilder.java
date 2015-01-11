@@ -2,7 +2,8 @@ package pl.semantyk.main;
 
 import org.apache.log4j.Logger;
 
-import pl.semantyk.database.DatabaseExporter;
+import pl.semantyk.database.WiktionaryToDBExporter;
+import pl.semantyk.database.WordnetToDBExporter;
 import pl.semantyk.database.DatabaseMerger;
 import pl.semantyk.enums.DatabaseType;
 import pl.semantyk.exceptions.SystemException;
@@ -16,10 +17,12 @@ import pl.semantyk.wordnetparser.Normalizer;
 import pl.semantyk.wordnetparser.WordnetParser;
 import pl.semantyk.wordnetparser.WordnetXMLExporter;
 
+import static pl.semantyk.enums.DatabaseType.WIKTIONARY;
+import static pl.semantyk.enums.DatabaseType.WORDNET;
+
 /**
- * Klasa obudowująca słownik. Zajmuje się konfiguracją słownika i jego
- * wypełnieniem.
- * 
+ * Builder working on Dictionary object. Configured in main method.
+ *
  * @author Sebastian Fabisz
  */
 public class DictionaryBuilder {
@@ -47,7 +50,9 @@ public class DictionaryBuilder {
 
 	private Normalizer normalizer;
 
-	private DatabaseExporter dbExporter;
+	private WordnetToDBExporter wnDbExporter;
+
+	private WiktionaryToDBExporter wkDbExporter;
 
 	// <------------------------ THREADS ----------------------->
 	/**
@@ -96,12 +101,12 @@ public class DictionaryBuilder {
 
 		if (PROCESS_WIKT) {
 			buildWiktionaryDatabase();
-			saveDictionaryToDatabase(DatabaseType.WIKTIONARY);
+			saveDictionaryToDatabase(WIKTIONARY);
 		}
 
 		if (PROCESS_WN) {
 			buildWordNetDatabase();
-			saveDictionaryToDatabase(DatabaseType.WORDNET);
+			saveDictionaryToDatabase(WORDNET);
 		}
 
 		if (SAVE)
@@ -113,11 +118,23 @@ public class DictionaryBuilder {
 	}
 
 	private void saveDictionaryToDatabase(DatabaseType databaseType) {
-		if (dbExporter == null) {
-			dbExporter = new DatabaseExporter(dictionary);
+
+		if (databaseType.equals(WORDNET)) {
+			if (wnDbExporter == null) {
+				wnDbExporter = new WordnetToDBExporter(dictionary);
+			}
+
+			wnDbExporter.exportDatabase(databaseType);
 		}
 
-		dbExporter.exportDatabase(databaseType);
+		if (databaseType.equals(WIKTIONARY)) {
+			if (wkDbExporter == null) {
+				wkDbExporter = new WiktionaryToDBExporter(dictionary);
+			}
+
+			wkDbExporter.exportDatabase();
+		}
+
 	}
 
 	private void mergeDatabases() {
@@ -161,7 +178,7 @@ public class DictionaryBuilder {
 		}
 
 		if (SAVE) {
-			exportToXMLFiles(DatabaseType.WORDNET);
+			exportToXMLFiles(WORDNET);
 		}
 	}
 
@@ -181,7 +198,7 @@ public class DictionaryBuilder {
 		wikiRawDataFormatter.format();
 
 		if (SAVE) {
-			exportToXMLFiles(DatabaseType.WIKTIONARY);
+			exportToXMLFiles(WIKTIONARY);
 		}
 	}
 
@@ -220,7 +237,7 @@ public class DictionaryBuilder {
 	}
 
 	/**
-	 * COnfigure bulder to run merging script.
+	 * Configure builder to run merging script.
 	 * 
 	 * @param merge
 	 * @return configured instance of builder
@@ -377,12 +394,12 @@ public class DictionaryBuilder {
 		this.normalizer = normalizer;
 	}
 
-	public DatabaseExporter getExporter() {
-		return dbExporter;
+	public WordnetToDBExporter getExporter() {
+		return wnDbExporter;
 	}
 
-	public void setExporter(DatabaseExporter exporter) {
-		this.dbExporter = exporter;
+	public void setExporter(WordnetToDBExporter exporter) {
+		this.wnDbExporter = exporter;
 	}
 
 	public String getWordNetDbfilename() {

@@ -1,6 +1,5 @@
 package pl.semantyk.utils;
 
-import static pl.semantyk.utils.CommonUtils.print;
 
 public class StringUtils {
 
@@ -60,6 +59,6 @@ public class StringUtils {
     public static void main(String[] args) {
         String temp = "asdasd<ref>{{PoradniaPWN|id=13645|hasło=zdrobnienia czy zgrubienia?}}</ref>";
         String clean = removeReferences(temp);
-        print(clean);
+        System.out.println(clean);
     }
 }

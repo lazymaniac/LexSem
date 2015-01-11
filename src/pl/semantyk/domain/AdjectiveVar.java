@@ -1,35 +1,30 @@
 package pl.semantyk.domain;
 
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
 import pl.semantyk.wikiparser.WikiNumeration;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Table(name = "PRZYMIOTNIK_ODM")
 public class AdjectiveVar implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 2013397755540193631L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_PRZYMIOTNIK_ODM", nullable = false, unique = true)
-    private Integer id;
+    @Column(name = "ID_PRZYMIOTNIK_ODM")
+    private Integer id = IdGenerator.getId(this.getClass());
 
-    @Transient
     private WikiNumeration numeration;
 
-    @OneToMany(mappedBy = "adjectiveVar",
-            cascade = CascadeType.ALL,
-            targetEntity = AdjectiveDegreeVar.class,
-            orphanRemoval = true)
-    private List<AdjectiveDegreeVar> degree = new ArrayList<>();
+    @Column(name = "ID_ZNACZENIE")
+    private Integer importance;
 
-    @ManyToOne(targetEntity = Importance.class, optional = false)
-    @JoinColumn(name = "ID_ZNACZENIE")
-    private Importance importance;
+    private List<AdjectiveDegreeVar> degree = new ArrayList<>();
 
     public AdjectiveVar() {
     }
@@ -54,24 +49,24 @@ public class AdjectiveVar implements Serializable, Cloneable {
         this.numeration = numeracja;
     }
 
+    public Integer getImportance() {
+        return importance;
+    }
+
+    public void setImportance(Integer importance) {
+        this.importance = importance;
+    }
+
     public List<AdjectiveDegreeVar> getDegree() {
         return degree;
     }
 
-    public void setDegree(List<AdjectiveDegreeVar> degree) {
-        this.degree = degree;
-    }
-
-    public Importance getImportance() {
-        return importance;
-    }
-
-    public void setImportance(Importance importance) {
-        this.importance = importance;
-    }
-
     public void addAdjectiveDegree(AdjectiveDegreeVar var) {
         this.degree.add(var);
+    }
+
+    public void setDegree(List<AdjectiveDegreeVar> degree) {
+        this.degree = degree;
     }
 
     @Override
@@ -82,8 +77,8 @@ public class AdjectiveVar implements Serializable, Cloneable {
         AdjectiveVar that = (AdjectiveVar) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (numeration != null ? !numeration.equals(that.numeration) : that.numeration != null) return false;
-        return !(degree != null ? !degree.equals(that.degree) : that.degree != null);
+        if (importance != null ? !importance.equals(that.importance) : that.importance != null) return false;
+        return !(numeration != null ? !numeration.equals(that.numeration) : that.numeration != null);
 
     }
 
@@ -91,12 +86,18 @@ public class AdjectiveVar implements Serializable, Cloneable {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (numeration != null ? numeration.hashCode() : 0);
-        result = 31 * result + (degree != null ? degree.hashCode() : 0);
+        result = 31 * result + (importance != null ? importance.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return  "AdjectiveVar" + "degree=" + degree + ", numeration=" + numeration + ", id=" + id + '}';
+        final StringBuffer sb = new StringBuffer("AdjectiveVar{");
+        sb.append("id=").append(id);
+        sb.append(", numeration=").append(numeration);
+        sb.append(", importance=").append(importance);
+        sb.append('}');
+        return sb.toString();
     }
+
 }

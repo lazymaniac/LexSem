@@ -1,7 +1,7 @@
 package pl.semantyk.enums;
 
 /**
- * Typ wyliczeniowy reprezentujący stopniowanie przymiotnika.
+ * Enum representing gradation of adjective.
  *
  * @author Sebastian Fabisz.
  */

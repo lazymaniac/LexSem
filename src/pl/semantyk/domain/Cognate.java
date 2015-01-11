@@ -1,19 +1,20 @@
 package pl.semantyk.domain;
 
-import javax.persistence.*;
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
 
 import java.io.Serializable;
 
-@Entity
 @Table(name = "POKREWNE")
 public class Cognate implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -4583823147483265694L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_POKREWNY", nullable = false, unique = true)
-    private Integer id;
+    @Column(name = "ID_POKREWNY")
+    private Integer id = IdGenerator.getId(this.getClass());
 
     @Column(name = "POKREWNY")
     private String cognate;
@@ -21,9 +22,8 @@ public class Cognate implements Serializable, Cloneable {
     @Column(name = "CZESC_MOWY")
     private String partOfSpeech;
 
-    @ManyToOne(targetEntity = Importance.class, optional = false)
-    @JoinColumn(name = "ID_ZNACZENIE")
-    private Importance importance;
+    @Column(name = "ID_ZNACZENIE")
+    private Integer importance;
 
     public Cognate(String cognate) {
         this.cognate = cognate;
@@ -48,14 +48,14 @@ public class Cognate implements Serializable, Cloneable {
         this.cognate = cognate;
     }
 
-    public Importance getImportance() {
+    public Integer getImportance() {
         return importance;
     }
 
-    public void setImportance(Importance importance) {
+    public void setImportance(Integer importance) {
         this.importance = importance;
     }
-    
+
     public String getPartOfSpeech() {
 		return partOfSpeech;
 	}
@@ -92,18 +92,14 @@ public class Cognate implements Serializable, Cloneable {
         return result;
     }
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("\nCognate [id=");
-		builder.append(id);
-		builder.append(", \ncognate=");
-		builder.append(cognate);
-		builder.append(", \npartOfSpeech=");
-		builder.append(partOfSpeech);
-		builder.append("]\n");
-		return builder.toString();
-	}
-
-    
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Cognate{");
+        sb.append("id=").append(id);
+        sb.append(", cognate='").append(cognate).append('\'');
+        sb.append(", partOfSpeech='").append(partOfSpeech).append('\'');
+        sb.append(", importance=").append(importance);
+        sb.append('}');
+        return sb.toString();
+    }
 }

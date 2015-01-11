@@ -14,11 +14,11 @@ public class ScriptExecutor {
 
 	private final Connection connection;
 
-	public ScriptExecutor(Connection connection) {
+	public ScriptExecutor(final Connection connection) {
 		this.connection = connection;
 	}
 
-	public void runSQL(InputStream in) {
+	public void runSQL(final InputStream in) {
 
 		Scanner s = new Scanner(in);
 		s.useDelimiter("(;(\r)?\n)|(--\n)");
@@ -29,8 +29,7 @@ public class ScriptExecutor {
 				String line = s.next();
 				if (line.startsWith("/*!") && line.endsWith("*/")) {
 					int i = line.indexOf(' ');
-					line = line
-							.substring(i + 1, line.length() - " */".length());
+					line = line.substring(i + 1, line.length() - " */".length());
 				}
 
 				if (line.trim().length() > 0) {

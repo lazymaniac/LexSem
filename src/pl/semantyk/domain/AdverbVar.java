@@ -1,34 +1,30 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.wikiparser.WikiNumeration;
-
-import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
+import pl.semantyk.wikiparser.WikiNumeration;
+
 @Table(name = "PRZYSLOWEK_ODM")
 public class AdverbVar implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -7590074968372388492L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Integer id = IdGenerator.getId(this.getClass());
 
-	@Transient
 	private WikiNumeration numeration;
 
 	@Column(name = "STOP_WYZSZY")
 	private String higherDegree;
 
-	@Column(name = "STOP_NAJWYZSZY")
-	private String highestDegree;
+	@Column(name = "ID_ZNACZENIE")
+	private Integer importance;
 
-	@ManyToOne(targetEntity = Importance.class, optional = false)
-	@JoinColumn(name = "ID_ZNACZENIE")
-	private Importance importance;
-
-	public AdverbVar(WikiNumeration numeration) {
+	public AdverbVar(final WikiNumeration numeration) {
 		this.numeration = numeration;
 	}
 
@@ -39,7 +35,7 @@ public class AdverbVar implements Serializable, Cloneable {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -47,7 +43,7 @@ public class AdverbVar implements Serializable, Cloneable {
 		return numeration;
 	}
 
-	public void setNumeration(WikiNumeration numeration) {
+	public void setNumeration(final WikiNumeration numeration) {
 		this.numeration = numeration;
 	}
 
@@ -55,28 +51,24 @@ public class AdverbVar implements Serializable, Cloneable {
 		return higherDegree;
 	}
 
-	public void setHigherDegree(String higherDegree) {
+	public void setHigherDegree(final String higherDegree) {
 		this.higherDegree = higherDegree;
 	}
 
-	public String getHighestDegree() {
-		return highestDegree;
-	}
+    public String getHigherDegree() {
+        return higherDegree;
+    }
 
-	public void setHighestDegree(String highestDegree) {
-		this.highestDegree = highestDegree;
-	}
+    public Integer getImportance() {
+        return importance;
+    }
 
-	public Importance getImportance() {
-		return importance;
-	}
+    public void setImportance(Integer importance) {
+        this.importance = importance;
+    }
 
-	public void setImportance(Importance importance) {
-		this.importance = importance;
-	}
-
-	@Override
-	public boolean equals(Object o) {
+    @Override
+	public boolean equals(final Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -89,34 +81,29 @@ public class AdverbVar implements Serializable, Cloneable {
 		if (id != null ? !id.equals(that.id) : that.id != null) {
 			return false;
 		}
-		if (numeration != null ? !numeration.equals(that.numeration)
-				: that.numeration != null) {
+		if (numeration != null ? !numeration.equals(that.numeration) : that.numeration != null) {
 			return false;
 		}
-		if (highestDegree != null ? !highestDegree.equals(that.highestDegree)
-				: that.highestDegree != null) {
-			return false;
-		}
-		return !(higherDegree != null ? !higherDegree.equals(that.higherDegree)
-				: that.higherDegree != null);
+		return !(higherDegree != null ? !higherDegree.equals(that.higherDegree) : that.higherDegree != null);
 
 	}
 
 	@Override
 	public int hashCode() {
 		int result = id != null ? id.hashCode() : 0;
-		result = 31 * result + (numeration != null ? numeration.hashCode() : 0);
-		result = 31 * result
-				+ (higherDegree != null ? higherDegree.hashCode() : 0);
-		result = 31 * result
-				+ (highestDegree != null ? highestDegree.hashCode() : 0);
+		result = (31 * result) + (numeration != null ? numeration.hashCode() : 0);
+		result = (31 * result) + (higherDegree != null ? higherDegree.hashCode() : 0);
 		return result;
 	}
 
-	@Override
-	public String toString() {
-		return "AdverbVar {" + "highestDegree='" + highestDegree + '\''
-				+ ", higherDegree='" + higherDegree + '\'' + ", numeration="
-				+ numeration + ", id=" + id + '}';
-	}
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("AdverbVar{");
+        sb.append("id=").append(id);
+        sb.append(", numeration=").append(numeration);
+        sb.append(", higherDegree='").append(higherDegree).append('\'');
+        sb.append(", importance=").append(importance);
+        sb.append('}');
+        return sb.toString();
+    }
 }

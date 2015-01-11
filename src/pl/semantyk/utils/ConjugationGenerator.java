@@ -9,7 +9,7 @@ import pl.semantyk.enums.PersonVarType;
 // TODO zrefaktoryzowac. Rozpisac kazda koniugacje do osobnej klasy.
 
 /**
- * Wypelnia wszystkie rodzaje odmian danego czasownika na podstawie typu koniugacji.
+ * Generates all vars for verb on the basis of conjugation type.
  *
  * @author Sebastian.Fabisz
  * @version 1.0
@@ -200,6 +200,7 @@ public class ConjugationGenerator {
         czasTeraz.setPer2Plu(temat + czas_teraz_2os_lm);
         czasTeraz.setPer3Plu(temat + czas_teraz_3os_lm);
         czasTeraz.setVarType(PersonVarType.CZAS_TERAZ);
+        czasTeraz.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(czasTeraz);
 
         PersonVar czasPrzeszlyM = new PersonVar();
@@ -210,6 +211,7 @@ public class ConjugationGenerator {
         czasPrzeszlyM.setPer2Plu(temat + czas_przesz_2os_lm_m);
         czasPrzeszlyM.setPer3Plu(temat + czas_przesz_3os_lm_m);
         czasPrzeszlyM.setVarType(PersonVarType.CZAS_PRZESZ_M);
+        czasPrzeszlyM.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(czasPrzeszlyM);
 
         PersonVar czasPrzeszlyF = new PersonVar();
@@ -220,6 +222,7 @@ public class ConjugationGenerator {
         czasPrzeszlyF.setPer2Plu(temat + czas_przesz_2os_lm_fn);
         czasPrzeszlyF.setPer3Plu(temat + czas_przesz_3os_lm_fn);
         czasPrzeszlyF.setVarType(PersonVarType.CZAS_PRZESZ_F);
+        czasPrzeszlyF.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(czasPrzeszlyF);
 
         PersonVar czasPrzeszlyN = new PersonVar();
@@ -230,6 +233,7 @@ public class ConjugationGenerator {
         czasPrzeszlyN.setPer2Plu(temat + czas_przesz_2os_lm_fn);
         czasPrzeszlyN.setPer3Plu(temat + czas_przesz_3os_lm_fn);
         czasPrzeszlyN.setVarType(PersonVarType.CZAS_PRZESZ_N);
+        czasPrzeszlyN.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(czasPrzeszlyN);
 
         czasOdm.setImpersonalFormPast(temat + form_bezosob_czasu_przesz_123os_lp_lm);
@@ -242,6 +246,7 @@ public class ConjugationGenerator {
         trybRozkaz.setPer2Plu(temat + tryb_rozkaz_2os_lm);
         trybRozkaz.setPer3Plu(tryb_rozkaz_3os_lm);
         trybRozkaz.setVarType(PersonVarType.TRYB_ROZKAZ);
+        trybRozkaz.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(trybRozkaz);
 
         PersonVar trybPrzypM = new PersonVar();
@@ -252,6 +257,7 @@ public class ConjugationGenerator {
         trybPrzypM.setPer2Plu(temat + tryb_przyp_2os_lm_m);
         trybPrzypM.setPer3Plu(temat + tryb_przyp_3os_lm_m);
         trybPrzypM.setVarType(PersonVarType.TRYB_PRZYP_M);
+        trybPrzypM.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(trybPrzypM);
 
         PersonVar trybPrzypF = new PersonVar();
@@ -262,6 +268,7 @@ public class ConjugationGenerator {
         trybPrzypF.setPer2Plu(temat + tryb_przyp_2os_lm_fn);
         trybPrzypF.setPer3Plu(temat + tryb_przyp_3os_lm_fn);
         trybPrzypF.setVarType(PersonVarType.TRYB_PRZYP_F);
+        trybPrzypF.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(trybPrzypF);
 
         PersonVar trybPrzypN = new PersonVar();
@@ -272,6 +279,7 @@ public class ConjugationGenerator {
         trybPrzypN.setPer2Plu(temat + tryb_przyp_2os_lm_fn);
         trybPrzypN.setPer3Plu(temat + tryb_przyp_3os_lm_fn);
         trybPrzypN.setVarType(PersonVarType.TRYB_PRZYP_N);
+        trybPrzypN.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(trybPrzypN);
 
         PersonVar imiesPrzymCzynnyM = new PersonVar();
@@ -282,6 +290,7 @@ public class ConjugationGenerator {
         imiesPrzymCzynnyM.setPer2Plu(temat + imies_przym_czynny_123os_lp_lm_m);
         imiesPrzymCzynnyM.setPer3Plu(temat + imies_przym_czynny_123os_lp_lm_m);
         imiesPrzymCzynnyM.setVarType(PersonVarType.IMIES_PRZYM_CZYNNY_M);
+        imiesPrzymCzynnyM.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(imiesPrzymCzynnyM);
 
         PersonVar imiesPrzymCzynnyF = new PersonVar();
@@ -292,6 +301,7 @@ public class ConjugationGenerator {
         imiesPrzymCzynnyF.setPer2Plu(temat + imies_przym_czynny_123os_fn_lm);
         imiesPrzymCzynnyF.setPer3Plu(temat + imies_przym_czynny_123os_fn_lm);
         imiesPrzymCzynnyF.setVarType(PersonVarType.IMIES_PRZYM_CZYNNY_F);
+        imiesPrzymCzynnyF.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(imiesPrzymCzynnyF);
 
         PersonVar imiesPrzymCzynnyN = new PersonVar();
@@ -302,6 +312,7 @@ public class ConjugationGenerator {
         imiesPrzymCzynnyN.setPer2Plu(temat + imies_przym_czynny_123os_fn_lm);
         imiesPrzymCzynnyN.setPer3Plu(temat + imies_przym_czynny_123os_fn_lm);
         imiesPrzymCzynnyN.setVarType(PersonVarType.IMIES_PRZYM_CZYNNY_N);
+        imiesPrzymCzynnyN.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(imiesPrzymCzynnyN);
 
         PersonVar imiesPrzymBiernyM = new PersonVar();
@@ -312,6 +323,7 @@ public class ConjugationGenerator {
         imiesPrzymBiernyM.setPer2Plu(temat + imies_przym_bierny_123os_lm_m);
         imiesPrzymBiernyM.setPer3Plu(temat + imies_przym_bierny_123os_lm_m);
         imiesPrzymBiernyM.setVarType(PersonVarType.IMIES_PRZYM_BIERNY_M);
+        imiesPrzymBiernyM.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(imiesPrzymBiernyM);
 
         PersonVar imiesPrzymBiernyF = new PersonVar();
@@ -322,6 +334,7 @@ public class ConjugationGenerator {
         imiesPrzymBiernyF.setPer2Plu(temat + imies_przym_bierny_123os_lm_fn);
         imiesPrzymBiernyF.setPer3Plu(temat + imies_przym_bierny_123os_lm_fn);
         imiesPrzymBiernyF.setVarType(PersonVarType.IMIES_PRZYM_BIERNY_F);
+        imiesPrzymBiernyF.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(imiesPrzymBiernyF);
 
         PersonVar imiesPrzymBiernyN = new PersonVar();
@@ -332,6 +345,7 @@ public class ConjugationGenerator {
         imiesPrzymBiernyN.setPer2Plu(temat + imies_przym_bierny_123os_lm_fn);
         imiesPrzymBiernyN.setPer3Plu(temat + imies_przym_bierny_123os_lm_fn);
         imiesPrzymBiernyN.setVarType(PersonVarType.IMIES_PRZYM_BIERNY_N);
+        imiesPrzymBiernyN.setVerbVar(czasOdm.getId());
         czasOdm.addPersonVar(imiesPrzymBiernyN);
 
         czasOdm.setAdverbialParticipleContemporary(temat + imies_przys_wpolcz_123os_lp_lm);

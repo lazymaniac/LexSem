@@ -1,7 +1,6 @@
 package pl.semantyk.database;
 
-import pl.semantyk.dao.WnUnitDao;
-import pl.semantyk.dao.WnUnitDaoImpl;
+import pl.semantyk.dao.DatabaseMergerDao;
 import pl.semantyk.exceptions.SystemException;
 import pl.semantyk.utils.StopWatch;
 
@@ -11,17 +10,17 @@ public class DatabaseMerger {
 	
 	private static final Logger LOG = Logger.getLogger(DatabaseMerger.class);
 
-	private WnUnitDao wnUnitDao = new WnUnitDaoImpl();
+	private DatabaseMergerDao merger = new DatabaseMergerDao();
 	
     public DatabaseMerger() {
     }
     
     public boolean merge() {
-    	StopWatch watch = new StopWatch(WnUnitDao.class,
+    	StopWatch watch = new StopWatch(DatabaseMergerDao.class,
 				"merging WordNet units with Wiki units...");
 		watch.start();
 		try {
-			wnUnitDao.mergeJednWnWithJednWiki();
+			merger.mergeWnWithWikt();
 		} catch (SystemException e) {
 			LOG.debug(e);
 			watch.stop();

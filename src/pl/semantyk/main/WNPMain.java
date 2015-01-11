@@ -1,20 +1,13 @@
 package pl.semantyk.main;
 
-import static pl.semantyk.database.EntityManagerProvider.getEm;
-import static pl.semantyk.utils.CommonUtils.closeOutput;
-
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
+import org.apache.log4j.*;
 import pl.semantyk.database.DatabaseCreator;
 import pl.semantyk.enums.TimeUnit;
 import pl.semantyk.utils.PropertyProvider;
 import pl.semantyk.utils.StopWatch;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Main class.
@@ -38,15 +31,15 @@ public final class WNPMain {
 	 *            array of arguments read from console.
 	 */
 	public static void main(final String[] args) {
+        //BasicConfigurator.configure();
+        PropertyConfigurator.configure("src/main/resources/META-INF/log4j.properties");
+        setupLogging();
 		StopWatch watch = new StopWatch(WNPMain.class, "Program started.",
 				TimeUnit.SECOND);
 		watch.start();
 		if (args.length < 1) {
 			usage();
 		}
-
-		setupLogging();
-		getEm(); // check database connection;
 
 		WNPMain main = new WNPMain();
 		main.readArgs(args);
@@ -64,7 +57,6 @@ public final class WNPMain {
 				.normalize(doNorm).removeForeignUnits(doRmForeign);
 
 		builder.buildDictionary();
-		closeOutput();
 		watch.stop();
 
 	}

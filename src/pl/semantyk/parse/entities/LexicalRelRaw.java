@@ -3,17 +3,17 @@ package pl.semantyk.parse.entities;
 public class LexicalRelRaw {
 
     /**
-     * Identyfiaktor rodzica w relacji leksykalnej.
+     * Parent id.
      */
     private Integer parent;
 
     /**
-     * Identyfikator rodzica w relacji leksykalnej.
+     * Children id.
      */
     private Integer child;
 
     /**
-     * Identyfikator relacji.
+     * Relation id.
      */
     private Integer relation;
 
@@ -21,7 +21,7 @@ public class LexicalRelRaw {
     }
 
     /**
-     * Konstruktor parametryzowany.
+     * Constructor.
      *
      * @param parent   identyfaktor rodzica.
      * @param child  identyfikator potomka.

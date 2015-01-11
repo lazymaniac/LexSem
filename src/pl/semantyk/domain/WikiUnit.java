@@ -1,33 +1,31 @@
 package pl.semantyk.domain;
 
-import javax.persistence.*;
-
 import org.apache.log4j.Logger;
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "JEDNOSTKA_WIKI", uniqueConstraints = { @UniqueConstraint(columnNames = "ID_JEDNOSTKA") })
+@Table(name = "JEDNOSTKA_WIKI")
 public class WikiUnit implements Serializable, Cloneable {
-
+	// TODO add counters.
 	private static final long serialVersionUID = 4340005967634872221L;
 	
 	private static final Logger LOG = Logger.getLogger(WikiUnit.class);
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID_JEDNOSTKA", unique = true, nullable = false)
-	private Integer id;
+	@Column(name = "ID_JEDNOSTKA")
+	private Integer id = IdGenerator.getId(this.getClass());
 
 	@Column(name = "NAZWA")
 	private String name; // nazwa jednostki
 
-	@OneToMany(mappedBy = "wikiUnit", targetEntity = PartOfSpeech.class, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PartOfSpeech> partsOfSpeech = new ArrayList<>();
 
-	@OneToMany(mappedBy = "wikiUnit", targetEntity = WnUnit.class)
 	private List<WnUnit> wnUnits = new ArrayList<>();
 
 	@Column(name = "TEMAT")
@@ -81,7 +79,7 @@ public class WikiUnit implements Serializable, Cloneable {
 			int idxPartOfSpeech = example.getNumeration().getPartOfSpeech();
 			int idxImportance = example.getNumeration().getImportanceIdx();
 			example.setImportance(partsOfSpeech.get(idxPartOfSpeech)
-					.getImportances().get(idxImportance));
+					.getImportances().get(idxImportance).getId());
 			this.partsOfSpeech.get(idxPartOfSpeech).getImportances()
 					.get(idxImportance).getExamples().add(example);
 		} catch (IndexOutOfBoundsException ed) {
@@ -100,14 +98,16 @@ public class WikiUnit implements Serializable, Cloneable {
 				int idxPartOfSpeech = collocation.getNumeration().getPartOfSpeech();
 				int idxImportance = collocation.getNumeration().getImportanceIdx();
 				collocation.setImportance(partsOfSpeech.get(idxPartOfSpeech)
-						.getImportances().get(idxImportance));
+						.getImportances().get(idxImportance).getId());
 				this.partsOfSpeech.get(idxPartOfSpeech).getImportances()
 						.get(idxImportance).getCollocations().add(collocation);
 			} else {
 				for (PartOfSpeech partOfSpeech : partsOfSpeech) {
 					for (Importance importance : partOfSpeech.getImportances()) {
-						collocation.setImportance(importance);
-						importance.getCollocations().add(collocation);
+						collocation.setImportance(importance.getId());
+						importance.getCollocations().add(new Collocation(collocation.getId(),
+								collocation.getCollocation(),
+								importance.getId()));
 					}
 				}
 			}
@@ -122,7 +122,7 @@ public class WikiUnit implements Serializable, Cloneable {
 			int idxPartOfSpeech = synonym.getNumeration().getPartOfSpeech();
 			int idxImportance = synonym.getNumeration().getImportanceIdx();
 			synonym.setImportance(partsOfSpeech.get(idxPartOfSpeech).getImportances()
-					.get(idxImportance));
+					.get(idxImportance).getId());
 			this.partsOfSpeech.get(idxPartOfSpeech).getImportances()
 					.get(idxImportance).getSynonyms().add(synonym);
 		} catch (IndexOutOfBoundsException ex) {
@@ -137,7 +137,7 @@ public class WikiUnit implements Serializable, Cloneable {
 			int idxImportance = antonym.getNumeration().getImportanceIdx();
 			Importance importance = partsOfSpeech.get(idxPartOfSpeech)
 					.getImportances().get(idxImportance);
-			antonym.setImportance(importance);
+			antonym.setImportance(importance.getId());
 			importance.getAntonyms().add(antonym);
 		} catch (IndexOutOfBoundsException ex) {
 			LOG.debug("Numeration incorrect. Name of unit: " + this.getName());
@@ -148,7 +148,7 @@ public class WikiUnit implements Serializable, Cloneable {
 	public void addCognate(Cognate cognate) {
 		for (PartOfSpeech partOfSpeech : partsOfSpeech) {
 			for (Importance importance : partOfSpeech.getImportances()) {
-				cognate.setImportance(importance);
+				cognate.setImportance(importance.getId());
 				importance.getCognates().add(cognate);
 			}
 		}
@@ -160,14 +160,15 @@ public class WikiUnit implements Serializable, Cloneable {
 				int idxPartOfSpeech = phraseology.getNumeration().getPartOfSpeech();
 				int idxImportance = phraseology.getNumeration().getImportanceIdx();
 				phraseology.setImportance(partsOfSpeech.get(idxPartOfSpeech)
-						.getImportances().get(idxImportance));
+						.getImportances().get(idxImportance).getId());
 				this.partsOfSpeech.get(idxPartOfSpeech).getImportances()
 						.get(idxImportance).getPhraseology().add(phraseology);
 			} else {
 				for (PartOfSpeech partOfSpeech : partsOfSpeech) {
-					for (Importance Importance : partOfSpeech.getImportances()) {
-						phraseology.setImportance(Importance);
-						Importance.getPhraseology().add(phraseology);
+					for (Importance importance : partOfSpeech.getImportances()) {
+						importance.getPhraseology().add(new Phraseology(phraseology.getId(),
+								phraseology.getPhraseology(),
+								importance.getId()));
 					}
 				}
 			}
@@ -182,7 +183,7 @@ public class WikiUnit implements Serializable, Cloneable {
 			int idxPartOfSpeech = var.getNumeration().getPartOfSpeech();
 			int idxImportance = var.getNumeration().getImportanceIdx();
 			var.setImportance(partsOfSpeech.get(idxPartOfSpeech).getImportances()
-					.get(idxImportance));
+					.get(idxImportance).getId());
 			this.partsOfSpeech.get(idxPartOfSpeech).getImportances()
 					.get(idxImportance).getNounVar().add(var);
 		} catch (IndexOutOfBoundsException ex) {
@@ -196,7 +197,7 @@ public class WikiUnit implements Serializable, Cloneable {
 			int idxPartOfSpeech = var.getNumeration().getPartOfSpeech();
 			int idxImportance = var.getNumeration().getImportanceIdx();
 			var.setImportance(partsOfSpeech.get(idxPartOfSpeech).getImportances()
-					.get(idxImportance));
+					.get(idxImportance).getId());
 			this.partsOfSpeech.get(idxPartOfSpeech).getImportances()
 					.get(idxImportance).getVerbVars().add(var);
 		} catch (IndexOutOfBoundsException ex) {
@@ -210,7 +211,7 @@ public class WikiUnit implements Serializable, Cloneable {
 			int idxPartOfSpeech = var.getNumeration().getPartOfSpeech();
 			int idxImportance = var.getNumeration().getImportanceIdx();
 			var.setImportance(partsOfSpeech.get(idxPartOfSpeech).getImportances()
-					.get(idxImportance));
+					.get(idxImportance).getId());
 			this.partsOfSpeech.get(idxPartOfSpeech).getImportances()
 					.get(idxImportance).getAdjectiveVars().add(var);
 		} catch (IndexOutOfBoundsException ex) {
@@ -224,7 +225,7 @@ public class WikiUnit implements Serializable, Cloneable {
 			int idxPartOfSpeech = var.getNumeration().getPartOfSpeech();
 			int idxImportance = var.getNumeration().getImportanceIdx();
 			var.setImportance(partsOfSpeech.get(idxPartOfSpeech).getImportances()
-					.get(idxImportance));
+					.get(idxImportance).getId());
 			this.partsOfSpeech.get(idxPartOfSpeech).getImportances()
 					.get(idxImportance).getAdverbVars().add(var);
 		} catch (IndexOutOfBoundsException ex) {
@@ -238,7 +239,7 @@ public class WikiUnit implements Serializable, Cloneable {
 			int idxPartOfSpeech = var.getNumeration().getPartOfSpeech();
 			int idxImportance = var.getNumeration().getImportanceIdx();
 			var.setImportance(partsOfSpeech.get(idxPartOfSpeech).getImportances()
-					.get(idxImportance));
+					.get(idxImportance).getId());
 			this.partsOfSpeech.get(idxPartOfSpeech).getImportances()
 					.get(idxImportance).getPronounVars().add(var);
 		} catch (IndexOutOfBoundsException ex) {

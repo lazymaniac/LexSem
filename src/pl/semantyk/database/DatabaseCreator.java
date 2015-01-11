@@ -1,7 +1,5 @@
 package pl.semantyk.database;
 
-import static pl.semantyk.database.EntityManagerProvider.getEm;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,18 +26,15 @@ public class DatabaseCreator {
 
 	private static final Logger LOG = Logger.getLogger(DatabaseCreator.class);
 
-	private final String SCHEMA_PATH = "SQL/db_schema.sql";
+	private final String SCHEMA_PATH = "SQL/postqresql_schema.sql";
 
-	private final static String[] propsName = new String[] { "driver", "url",
-			"user", "password", };
+	private final static String[] propsName = new String[] { "driver", "url", "user", "password", };
 
 	private final int URL = 1;
 	private final int USER = 2;
 	private final int PASSWORD = 3;
 
-	public DatabaseCreator() {
-		getEm();
-	}
+	public DatabaseCreator() { }
 
 	public void setupDatabase() {
 		createSchema();
@@ -53,16 +48,14 @@ public class DatabaseCreator {
 	}
 
 	public Connection getConnection() {
-		Map<String, String> properties = PropertyProvider.getProperties(Arrays
-				.asList(propsName));
+		Map<String, String> properties = PropertyProvider.getProperties(Arrays.asList(propsName));
 		Connection conn = null;
 		Properties connectionProps = new Properties();
 		connectionProps.put("user", properties.get(propsName[USER]));
 		connectionProps.put("password", properties.get(propsName[PASSWORD]));
 
 		try {
-			conn = DriverManager.getConnection(properties.get(propsName[URL]),
-					connectionProps);
+			conn = DriverManager.getConnection(properties.get(propsName[URL]), connectionProps);
 		} catch (SQLException e) {
 			LOG.debug(e);
 		}

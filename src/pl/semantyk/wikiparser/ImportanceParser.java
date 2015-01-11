@@ -48,11 +48,11 @@ public class ImportanceParser implements WikiRawParser {
                 tempImportances.add(clean.trim());
             }
 
-            PartOfSpeech partOfSpeech = new PartOfSpeech(type, tempUnit);
+            PartOfSpeech partOfSpeech = new PartOfSpeech(type, tempUnit.getId());
             List<Importance> importancesCont = new ArrayList<>();
 
             for (String znacz : tempImportances) {
-                importancesCont.add(new Importance(znacz, partOfSpeech));
+                importancesCont.add(new Importance(znacz, partOfSpeech.getId()));
             }
 
             partOfSpeech.setImportances(importancesCont);

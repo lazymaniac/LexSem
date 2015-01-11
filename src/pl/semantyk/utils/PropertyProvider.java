@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
  */
 public class PropertyProvider {
 
-	private static final Logger LOG = Logger.getLogger(PropertyProvider.class);
+	//private static final Logger LOG = Logger.getLogger(PropertyProvider.class);
 
 	private static Properties properties = null;
 
@@ -32,11 +32,11 @@ public class PropertyProvider {
 			properties = new Properties();
 			properties.load(in);
 			in.close();
-			LOG.info("Application configuration file loaded.");
+			//LOG.info("Application configuration file loaded.");
 		} catch (FileNotFoundException e) {
-			LOG.debug(e);
+			//LOG.debug(e);
 		} catch (IOException e) {
-			LOG.debug(e);
+			//LOG.debug(e);
 		}
 	}
 

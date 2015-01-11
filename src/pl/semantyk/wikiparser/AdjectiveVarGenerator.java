@@ -60,7 +60,7 @@ public class AdjectiveVarGenerator {
         }
 
         for (AdjectiveDegreeVar stop : result.getDegree()) {
-            stop.setAdjectiveVar(result);
+            stop.setAdjectiveVar(result.getId());
         }
 
         return result;

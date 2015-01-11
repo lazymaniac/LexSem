@@ -1,38 +1,39 @@
 package pl.semantyk.domain;
 
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
 import pl.semantyk.wikiparser.WikiNumeration;
-
-import javax.persistence.*;
 
 import java.io.Serializable;
 
-@Entity
 @Table(name = "KOLOKACJE")
 public class Collocation implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -8842889924621984709L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_KOLOKACJA", unique = true, nullable = false)
-    private Integer id;
+    @Column(name = "ID_KOLOKACJA")
+    private Integer id = IdGenerator.getId(this.getClass());
 
-    @Transient
     private WikiNumeration numeration;
 
     @Column(name = "KOLOKACJA")
     private String collocation;
 
-    @ManyToOne(targetEntity = Importance.class, optional = false)
-    @JoinColumn(name = "ID_ZNACZENIE")
-    private Importance importance;
+    @Column(name = "ID_ZNACZENIE")
+    private Integer importance;
 
     public Collocation(WikiNumeration numeration, String collocation) {
         this.numeration = numeration;
         this.collocation = collocation;
     }
 
-    public Collocation() {
+    public Collocation(Integer id, String collocation, Integer importance) {
+        this.id = id;
+        this.collocation = collocation;
+        this.importance = importance;
     }
 
     public Integer getId() {
@@ -59,11 +60,11 @@ public class Collocation implements Serializable, Cloneable {
         this.collocation = collocation;
     }
 
-    public Importance getImportance() {
+    public Integer getImportance() {
         return importance;
     }
 
-    public void setImportance(Importance importance) {
+    public void setImportance(Integer importance) {
         this.importance = importance;
     }
 
@@ -96,18 +97,14 @@ public class Collocation implements Serializable, Cloneable {
         return result;
     }
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("\nCollocation [id=");
-		builder.append(id);
-		builder.append(", \nnumeration=");
-		builder.append(numeration);
-		builder.append(", \ncollocation=");
-		builder.append(collocation);
-		builder.append("]\n");
-		return builder.toString();
-	}
-
- 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Collocation{");
+        sb.append("id=").append(id);
+        sb.append(", numeration=").append(numeration);
+        sb.append(", collocation='").append(collocation).append('\'');
+        sb.append(", importance=").append(importance);
+        sb.append('}');
+        return sb.toString();
+    }
 }

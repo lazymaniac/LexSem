@@ -1,7 +1,7 @@
 package pl.semantyk.enums;
 
 /**
- * Typ określający liczbę mnogą lub pojedynczą.
+ * Specify plural or singular.
  */
 public enum NumberType {
 

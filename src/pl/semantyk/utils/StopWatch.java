@@ -11,27 +11,27 @@ public class StopWatch {
 	private static final Logger LOG = Logger.getLogger(StopWatch.class);
 	
     /**
-     * Czas początkowy w milisekundach.
+     * Start time.
      */
     private long start = -1L;
 
     /**
-     * Czas koncowy w milisekndach.
+     * End time.
      */
     private long stop = -1L;
 
     /**
-     * Nazwa procesu.
+     * Process name.
      */
     private String processName = "default";
 
     /**
-     * Jednostka czasu. Domyślnie milisekundy.
+     * Time unit. Default milliseconds.
      */
     private TimeUnit timeUnit = TimeUnit.MILISECOND;
 
     /**
-     * Klasa wywołująca stoper.
+     * Caller class.
      */
     private Class<?> clazz;
 
@@ -59,7 +59,7 @@ public class StopWatch {
         long result = stop - start;
 
         if (start == -1L) {
-            throw new IllegalStateException("Uruchom najpierw metodę start().");
+            throw new IllegalStateException("Run start() first.");
         }
 
         if (timeUnit.equals(TimeUnit.SECOND))

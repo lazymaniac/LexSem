@@ -1,20 +1,21 @@
 package pl.semantyk.domain;
 
-import javax.persistence.*;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
+
 import java.io.Serializable;
 
 /**
  * Encja przechowuje informacje o typach relacji pomiędzy jednostkami słownikowymi i synsetami.
  */
-@Entity
 @Table(name = "TYP_RELACJI")
 public class RelationType implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -8785373060142981328L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_TYP_RELACJI", nullable = false, unique = true)
+    @Column(name = "ID_TYP_RELACJI")
     private Integer id;
 
     /**
@@ -32,31 +33,31 @@ public class RelationType implements Serializable, Cloneable {
     /**
      * Nazwa relacji.
      */
-    @Column(name = "NAZWA", nullable = false, length = 255)
+    @Column(name = "NAZWA")
     private String name;
 
     /**
      * Opis relacji.
      */
-    @Column(name = "OPIS", nullable = false, length = 2048)
+    @Column(name = "OPIS")
     private String description;
 
     /**
      * Pole przchowuje informacje jakich rodzajów jednostek dotyczy (rzeczownik, przymiotnik, czasownik itd.)
      */
-    @Column(name = "POSSTR", nullable = true, length = 45)
+    @Column(name = "POSSTR")
     private String posstr;
 
     /**
      * Dane do wyświetlenia.
      */
-    @Column(name = "WYSWIETL", nullable = true, length = 255)
+    @Column(name = "WYSWIETL")
     private String display;
 
     /**
      * Skrót relacji.
      */
-    @Column(name = "SKROT", nullable = true, length = 45)
+    @Column(name = "SKROT")
     private String abbreviation;
 
     /**
@@ -64,12 +65,6 @@ public class RelationType implements Serializable, Cloneable {
      */
     @Column(name = "AUTOODWRACANIE")
     private Boolean autorevert;
-
-    /*@OneToMany(mappedBy = "relacja")
-    private List<RelacjaLeksykalna> relacjeLeksykalne = new ArrayList<>();
-
-    @OneToMany(mappedBy = "relacja")
-    private List<RelacjaSynsetu> relacjeSynsetu = new ArrayList<>();*/
 
     public RelationType() {
     }
@@ -153,17 +148,17 @@ public class RelationType implements Serializable, Cloneable {
 
         RelationType that = (RelationType) o;
 
-        if (autorevert != null ? !autorevert.equals(that.autorevert) : that.autorevert != null)
-            return false;
+        if (abbreviation != null ? !abbreviation.equals(that.abbreviation) : that.abbreviation != null) return false;
+        if (autorevert != null ? !autorevert.equals(that.autorevert) : that.autorevert != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (display != null ? !display.equals(that.display) : that.display != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (parent != null ? !parent.equals(that.parent) : that.parent != null) return false;
         if (posstr != null ? !posstr.equals(that.posstr) : that.posstr != null) return false;
-        if (abbreviation != null ? !abbreviation.equals(that.abbreviation) : that.abbreviation != null) return false;
-        return !(type != null ? !type.equals(that.type) : that.type != null);
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
 
+        return true;
     }
 
     @Override
@@ -182,7 +177,17 @@ public class RelationType implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "RelationType{" + "id=" + id + ", type='" + type + '\'' + ", parent=" + parent + ", name='" + name + '\'' + ", decription='" + description + '\'' + ", posstr='" + posstr + '\'' + ", dispaly='" + display + '\'' + ", shortcut='" + abbreviation + '\'' + ", autoreverse=" + autorevert + '}';
+        final StringBuffer sb = new StringBuffer("RelationType{");
+        sb.append("id=").append(id);
+        sb.append(", type='").append(type).append('\'');
+        sb.append(", parent=").append(parent);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", posstr='").append(posstr).append('\'');
+        sb.append(", display='").append(display).append('\'');
+        sb.append(", abbreviation='").append(abbreviation).append('\'');
+        sb.append(", autorevert=").append(autorevert);
+        sb.append('}');
+        return sb.toString();
     }
-
 }

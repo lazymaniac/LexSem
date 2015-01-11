@@ -1,30 +1,29 @@
 package pl.semantyk.domain;
 
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
 import pl.semantyk.wikiparser.WikiNumeration;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
 @Table(name = "ANTONIMY")
 public class Antonym implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 8151576958527375565L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_ANTONIM", unique = true, nullable = false)
-    private Integer id;
+    @Column(name = "ID_ANTONIM")
+    private Integer id = IdGenerator.getId(this.getClass());
 
-    @Transient
     private WikiNumeration numeration;
 
     @Column(name = "ANTONIM")
     private String antonym;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_ZNACZENIE")
-    private Importance importance;
+    @Column(name = "ID_ZNACZENIE")
+    private Integer importance;
 
     public Antonym(WikiNumeration numeration, String antonym) {
         this.numeration = numeration;
@@ -58,11 +57,11 @@ public class Antonym implements Serializable, Cloneable {
         this.antonym = antonym;
     }
 
-    public Importance getImportance() {
+    public Integer getImportance() {
         return importance;
     }
 
-    public void setImportance(Importance importance) {
+    public void setImportance(Integer importance) {
         this.importance = importance;
     }
 
@@ -97,6 +96,12 @@ public class Antonym implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "Antonym {" + "antonym='" + antonym + '\'' + ", numeration=" + numeration + ", id=" + id + '}';
+        final StringBuffer sb = new StringBuffer("Antonym{");
+        sb.append("id=").append(id);
+        sb.append(", numeration=").append(numeration);
+        sb.append(", antonym='").append(antonym).append('\'');
+        sb.append(", importance=").append(importance);
+        sb.append('}');
+        return sb.toString();
     }
 }

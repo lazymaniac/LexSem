@@ -1,5 +1,6 @@
 package pl.semantyk.domain;
 
+import pl.semantyk.dao.IdGenerator;
 import pl.semantyk.enums.NumeralType;
 import pl.semantyk.wikiparser.WikiNumeration;
 
@@ -9,7 +10,7 @@ public class NumeralVar implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 2213964672850883654L;
 
-	private Integer id;
+	private Integer id = IdGenerator.getId(this.getClass());
 
 	private WikiNumeration numeration;
 

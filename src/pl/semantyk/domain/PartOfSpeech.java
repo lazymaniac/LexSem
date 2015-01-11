@@ -1,53 +1,44 @@
 package pl.semantyk.domain;
 
-import javax.persistence.*;
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Table(name = "CZESCI_MOWY")
 public class PartOfSpeech implements Serializable, Cloneable {
 
-    private static final long serialVersionUID = -3772867366261662688L;
+	private static final long serialVersionUID = -3772867366261662688L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_CZESC_MOWY", nullable = false, unique = true)
-    private Integer id;
+	@Id
+	@Column(name = "ID_CZESC_MOWY")
+	private Integer id = IdGenerator.getId(this.getClass());
 
-    @Column(name = "CZESC_MOWY")
-    private String partOfSpeech;
+	@Column(name = "CZESC_MOWY")
+	private String partOfSpeech;
 
-    @OneToMany(mappedBy = "partOfSpeech",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            targetEntity = Importance.class)
     private List<Importance> importance = new ArrayList<>();
 
-    @ManyToOne(targetEntity = WikiUnit.class, optional = false)
-    @JoinColumn(name = "ID_JEDNOSTKA")
-    private WikiUnit wikiUnit;
+	@Column(name = "ID_JEDNOSTKA")
+	private Integer wikiUnit;
 
-    public PartOfSpeech(String partOfSpeech, WikiUnit wikiUnit) {
-        this.partOfSpeech = partOfSpeech;
-        this.wikiUnit = wikiUnit;
-    }
+	public PartOfSpeech(final String partOfSpeech, final Integer wikiUnit) {
+		this.partOfSpeech = partOfSpeech;
+		this.wikiUnit = wikiUnit;
+	}
 
-    public PartOfSpeech(String partOfSpeech, List<Importance> importance, WikiUnit wikiUnit) {
-        this.partOfSpeech = partOfSpeech;
-        this.importance = importance;
-        this.wikiUnit = wikiUnit;
-    }
-
-    public PartOfSpeech() {
-    }
+	public PartOfSpeech() {
+	}
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
@@ -55,7 +46,7 @@ public class PartOfSpeech implements Serializable, Cloneable {
         return partOfSpeech;
     }
 
-    public void setPartOfSpeech(String partOfSpeech) {
+    public void setPartOfSpeech(final String partOfSpeech) {
         this.partOfSpeech = partOfSpeech;
     }
 
@@ -63,49 +54,48 @@ public class PartOfSpeech implements Serializable, Cloneable {
         return importance;
     }
 
-    public void setImportances(List<Importance> importances) {
-        this.importance = importances;
+    public void setImportances(final List<Importance> importances) {
+        importance = importances;
     }
 
-    public WikiUnit getWikiUnit() {
+    public Integer getWikiUnit() {
         return wikiUnit;
     }
 
-    public void setWikiUnit(WikiUnit wikiUnit) {
+    public void setWikiUnit(final Integer wikiUnit) {
         this.wikiUnit = wikiUnit;
     }
 
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof PartOfSpeech)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         PartOfSpeech that = (PartOfSpeech) o;
 
-        if (partOfSpeech != null ? !partOfSpeech.equals(that.partOfSpeech) : that.partOfSpeech != null) {
-            return false;
-        }
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
-        return !(importance != null ? !importance.equals(that.importance) : that.importance != null);
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (partOfSpeech != null ? !partOfSpeech.equals(that.partOfSpeech) : that.partOfSpeech != null) return false;
+        if (wikiUnit != null ? !wikiUnit.equals(that.wikiUnit) : that.wikiUnit != null) return false;
 
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (partOfSpeech != null ? partOfSpeech.hashCode() : 0);
-        result = 31 * result + (importance != null ? importance.hashCode() : 0);
+        result = 31 * result + (wikiUnit != null ? wikiUnit.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "PartOfSpeech {" + "id=" + id + ", partOfSpeech='" + partOfSpeech + '\'' + ", importance=" + importance + '}';
+        final StringBuffer sb = new StringBuffer("PartOfSpeech{");
+        sb.append("id=").append(id);
+        sb.append(", partOfSpeech='").append(partOfSpeech).append('\'');
+        sb.append(", wikiUnit=").append(wikiUnit);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -1,31 +1,30 @@
 package pl.semantyk.domain;
 
 import org.apache.commons.lang3.StringUtils;
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
 import pl.semantyk.utils.ConjugationGenerator;
 import pl.semantyk.wikiparser.WikiNumeration;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Table(name = "CZASOWNIK_ODM")
 public class VerbVar implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -4928762484910864537L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID_CZASOWNIK_ODM", nullable = false, unique = true)
-	private Integer id;
+	@Column(name = "ID_CZASOWNIK_ODM")
+	private Integer id = IdGenerator.getId(this.getClass());
 
-	@Transient
 	private WikiNumeration numeration;
 
-	@ManyToOne(targetEntity = Importance.class, optional = false)
-	@JoinColumn(name = "ID_ZNACZENIE", nullable = false)
-	private Importance importance;
+	@Column(name = "ID_ZNACZENIE")
+	private Integer importance;
 
 	@Column(name = "IS_DOKONANY")
 	private Boolean isPerfective = false;
@@ -82,7 +81,6 @@ public class VerbVar implements Serializable, Cloneable {
 	/**
 	 * Lista odmian przez osoby.
 	 */
-	@OneToMany(mappedBy = "verbVar", cascade = CascadeType.ALL, targetEntity = PersonVar.class, orphanRemoval = true)
 	private List<PersonVar> personVars = new ArrayList<>();
 
 	/**
@@ -137,14 +135,6 @@ public class VerbVar implements Serializable, Cloneable {
 
 	public void setNumeration(WikiNumeration numeration) {
 		this.numeration = numeration;
-	}
-
-	public Importance getImportance() {
-		return importance;
-	}
-
-	public void setImportance(Importance importance) {
-		this.importance = importance;
 	}
 
 	public Boolean isPerfective() {
@@ -219,15 +209,43 @@ public class VerbVar implements Serializable, Cloneable {
 		this.impersonalFormPast = impersonalFormPast;
 	}
 
-	public List<PersonVar> getPersonalVars() {
-		return personVars;
-	}
+    public List<PersonVar> getPersonalVars() {
+        return personVars;
+    }
 
-	public void setPersonalVars(List<PersonVar> peronalVars) {
-		this.personVars = peronalVars;
-	}
+    public void setPersonalVars(List<PersonVar> peronalVars) {
+        this.personVars = peronalVars;
+    }
 
-	public String getAdverbialParticipleContemporary() {
+    public Integer getImportance() {
+        return importance;
+    }
+
+    public void setImportance(Integer importance) {
+        this.importance = importance;
+    }
+
+    public Boolean getIsPerfective() {
+        return isPerfective;
+    }
+
+    public Boolean getIsReflexivVerb() {
+        return isReflexivVerb;
+    }
+
+    public void setIsReflexivVerb(Boolean isReflexivVerb) {
+        this.isReflexivVerb = isReflexivVerb;
+    }
+
+    public String getInifitive() {
+        return inifitive;
+    }
+
+    public void setInifitive(String inifitive) {
+        this.inifitive = inifitive;
+    }
+
+    public String getAdverbialParticipleContemporary() {
 		return adverbialParticipleContemporary;
 	}
 
@@ -252,115 +270,82 @@ public class VerbVar implements Serializable, Cloneable {
 		this.gerund = gerund;
 	}
 
-	public void addPersonVar(PersonVar var) {
-		var.setVerbVar(this);
-		this.personVars.add(var);
-	}
+    public void addPersonVar(PersonVar var) {
+        this.personVars.add(var);
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		VerbVar that = (VerbVar) o;
+        VerbVar verbVar = (VerbVar) o;
 
-		if (inifitive != null ? !inifitive.equals(that.inifitive)
-				: that.inifitive != null)
-			return false;
-		if (perfective != null ? !perfective.equals(that.perfective)
-				: that.perfective != null)
-			return false;
-		if (isPerfective != null ? !isPerfective.equals(that.isPerfective)
-				: that.isPerfective != null)
-			return false;
-		if (impersonalFormPast != null ? !impersonalFormPast
-				.equals(that.impersonalFormPast)
-				: that.impersonalFormPast != null)
-			return false;
-		if (id != null ? !id.equals(that.id) : that.id != null)
-			return false;
-		if (adverbialParticiplePrior != null ? !adverbialParticiplePrior
-				.equals(that.adverbialParticiplePrior)
-				: that.adverbialParticiplePrior != null)
-			return false;
-		if (adverbialParticipleContemporary != null ? !adverbialParticipleContemporary
-				.equals(that.adverbialParticipleContemporary)
-				: that.adverbialParticipleContemporary != null)
-			return false;
-		if (conjugation != null ? !conjugation.equals(that.conjugation)
-				: that.conjugation != null)
-			return false;
-		if (imperfective != null ? !imperfective.equals(that.imperfective)
-				: that.imperfective != null)
-			return false;
-		if (numeration != null ? !numeration.equals(that.numeration)
-				: that.numeration != null)
-			return false;
-		if (personVars != null ? !personVars.equals(that.personVars)
-				: that.personVars != null)
-			return false;
-		if (gerund != null ? !gerund.equals(that.gerund) : that.gerund != null)
-			return false;
-		if (topic != null ? !topic.equals(that.topic) : that.topic != null)
-			return false;
-		if (reflexivePronoun != null ? !reflexivePronoun
-				.equals(that.reflexivePronoun) : that.reflexivePronoun != null)
-			return false;
-		return !(isReflexivVerb != null ? !isReflexivVerb
-				.equals(that.isReflexivVerb) : that.isReflexivVerb != null);
+        if (adverbialParticipleContemporary != null ? !adverbialParticipleContemporary.equals(verbVar.adverbialParticipleContemporary) : verbVar.adverbialParticipleContemporary != null)
+            return false;
+        if (adverbialParticiplePrior != null ? !adverbialParticiplePrior.equals(verbVar.adverbialParticiplePrior) : verbVar.adverbialParticiplePrior != null)
+            return false;
+        if (conjugation != null ? !conjugation.equals(verbVar.conjugation) : verbVar.conjugation != null) return false;
+        if (gerund != null ? !gerund.equals(verbVar.gerund) : verbVar.gerund != null) return false;
+        if (id != null ? !id.equals(verbVar.id) : verbVar.id != null) return false;
+        if (imperfective != null ? !imperfective.equals(verbVar.imperfective) : verbVar.imperfective != null)
+            return false;
+        if (impersonalFormPast != null ? !impersonalFormPast.equals(verbVar.impersonalFormPast) : verbVar.impersonalFormPast != null)
+            return false;
+        if (importance != null ? !importance.equals(verbVar.importance) : verbVar.importance != null) return false;
+        if (inifitive != null ? !inifitive.equals(verbVar.inifitive) : verbVar.inifitive != null) return false;
+        if (isPerfective != null ? !isPerfective.equals(verbVar.isPerfective) : verbVar.isPerfective != null)
+            return false;
+        if (isReflexivVerb != null ? !isReflexivVerb.equals(verbVar.isReflexivVerb) : verbVar.isReflexivVerb != null)
+            return false;
+        if (numeration != null ? !numeration.equals(verbVar.numeration) : verbVar.numeration != null) return false;
+        if (perfective != null ? !perfective.equals(verbVar.perfective) : verbVar.perfective != null) return false;
+        if (reflexivePronoun != null ? !reflexivePronoun.equals(verbVar.reflexivePronoun) : verbVar.reflexivePronoun != null)
+            return false;
+        if (topic != null ? !topic.equals(verbVar.topic) : verbVar.topic != null) return false;
 
-	}
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = id != null ? id.hashCode() : 0;
-		result = 31 * result + (numeration != null ? numeration.hashCode() : 0);
-		result = 31 * result
-				+ (isPerfective != null ? isPerfective.hashCode() : 0);
-		result = 31 * result
-				+ (isReflexivVerb != null ? isReflexivVerb.hashCode() : 0);
-		result = 31 * result + (topic != null ? topic.hashCode() : 0);
-		result = 31 * result
-				+ (conjugation != null ? conjugation.hashCode() : 0);
-		result = 31 * result
-				+ (reflexivePronoun != null ? reflexivePronoun.hashCode() : 0);
-		result = 31 * result + (perfective != null ? perfective.hashCode() : 0);
-		result = 31 * result
-				+ (imperfective != null ? imperfective.hashCode() : 0);
-		result = 31 * result + (inifitive != null ? inifitive.hashCode() : 0);
-		result = 31
-				* result
-				+ (impersonalFormPast != null ? impersonalFormPast.hashCode()
-						: 0);
-		result = 31 * result + (personVars != null ? personVars.hashCode() : 0);
-		result = 31
-				* result
-				+ (adverbialParticipleContemporary != null ? adverbialParticipleContemporary
-						.hashCode() : 0);
-		result = 31
-				* result
-				+ (adverbialParticiplePrior != null ? adverbialParticiplePrior
-						.hashCode() : 0);
-		result = 31 * result + (gerund != null ? gerund.hashCode() : 0);
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (numeration != null ? numeration.hashCode() : 0);
+        result = 31 * result + (importance != null ? importance.hashCode() : 0);
+        result = 31 * result + (isPerfective != null ? isPerfective.hashCode() : 0);
+        result = 31 * result + (isReflexivVerb != null ? isReflexivVerb.hashCode() : 0);
+        result = 31 * result + (topic != null ? topic.hashCode() : 0);
+        result = 31 * result + (conjugation != null ? conjugation.hashCode() : 0);
+        result = 31 * result + (reflexivePronoun != null ? reflexivePronoun.hashCode() : 0);
+        result = 31 * result + (perfective != null ? perfective.hashCode() : 0);
+        result = 31 * result + (imperfective != null ? imperfective.hashCode() : 0);
+        result = 31 * result + (inifitive != null ? inifitive.hashCode() : 0);
+        result = 31 * result + (impersonalFormPast != null ? impersonalFormPast.hashCode() : 0);
+        result = 31 * result + (adverbialParticipleContemporary != null ? adverbialParticipleContemporary.hashCode() : 0);
+        result = 31 * result + (adverbialParticiplePrior != null ? adverbialParticiplePrior.hashCode() : 0);
+        result = 31 * result + (gerund != null ? gerund.hashCode() : 0);
+        return result;
+    }
 
-	@Override
-	public String toString() {
-		return "VerbVar {" + "id=" + id + ", numeration=" + numeration
-				+ ", isPerfective=" + isPerfective + ", isReflexive="
-				+ isReflexivVerb + ", topic='" + topic + '\''
-				+ ", conjugation='" + conjugation + '\''
-				+ ", reflexivePronoun='" + reflexivePronoun + '\''
-				+ ", perfective='" + perfective + '\'' + ", imperfective='"
-				+ imperfective + '\'' + ", infinitive='" + inifitive + '\''
-				+ ", impersonalFormPast='" + impersonalFormPast + '\''
-				+ ", personVars=" + personVars
-				+ ", adverbialParticipleContemporary='"
-				+ adverbialParticipleContemporary + '\''
-				+ ", adverbialParticiplePrior='" + adverbialParticiplePrior
-				+ '\'' + ", gerund='" + gerund + '\'' + '}';
-	}
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("VerbVar{");
+        sb.append("id=").append(id);
+        sb.append(", numeration=").append(numeration);
+        sb.append(", importance=").append(importance);
+        sb.append(", isPerfective=").append(isPerfective);
+        sb.append(", isReflexivVerb=").append(isReflexivVerb);
+        sb.append(", topic='").append(topic).append('\'');
+        sb.append(", conjugation='").append(conjugation).append('\'');
+        sb.append(", reflexivePronoun='").append(reflexivePronoun).append('\'');
+        sb.append(", perfective='").append(perfective).append('\'');
+        sb.append(", imperfective='").append(imperfective).append('\'');
+        sb.append(", inifitive='").append(inifitive).append('\'');
+        sb.append(", impersonalFormPast='").append(impersonalFormPast).append('\'');
+        sb.append(", adverbialParticipleContemporary='").append(adverbialParticipleContemporary).append('\'');
+        sb.append(", adverbialParticiplePrior='").append(adverbialParticiplePrior).append('\'');
+        sb.append(", gerund='").append(gerund).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

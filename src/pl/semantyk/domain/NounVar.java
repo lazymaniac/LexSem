@@ -1,17 +1,20 @@
 package pl.semantyk.domain;
 
+import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
 import pl.semantyk.enums.NounGender;
 import pl.semantyk.wikiparser.WikiNumeration;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+/**
  * Klasa przechowuje odmiane rzeczownika przez przypadki w liczbie pojedynczej i mnogiej.
  */
-@Entity
 @Table(name = "RZECZOWNIK_ODM")
 public class NounVar implements Serializable, Cloneable {
 
@@ -21,14 +24,12 @@ public class NounVar implements Serializable, Cloneable {
      * Identyfiaktor encji w bazie danych.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_RZECZ_ODM", nullable = false, unique = true)
-    private Integer id;
+    @Column(name = "ID_RZECZ_ODM")
+    private Integer id = IdGenerator.getId(this.getClass());
 
     /**
      * Zawiera ideksy znaczenie do którego należy odmiana.
      */
-    @Transient
     private WikiNumeration numeration;
 
     /**
@@ -40,14 +41,12 @@ public class NounVar implements Serializable, Cloneable {
     /**
      * Rodzaj rzeczownika.
      */
-    @Enumerated(EnumType.STRING)
     @Column(name = "RODZAJ")
     private NounGender gender;
 
     /**
      * 2 rodzaj rzeczownika.
      */
-    @Enumerated(EnumType.STRING)
     @Column(name = "DRUGI_RODZAJ")
     private NounGender secondGender;
 
@@ -68,18 +67,13 @@ public class NounVar implements Serializable, Cloneable {
     @Column(name = "BRAK_LM")
     private Boolean noPlural = false;
 
-    @OneToMany(mappedBy = "nounVar",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            targetEntity = CasesVar.class)
     private List<CasesVar> casesVar = new ArrayList<>();
 
     /**
      * Referencja do znaczenia którego dotyczy odmiana.
      */
-    @ManyToOne(targetEntity = Importance.class, optional = false)
-    @JoinColumn(name = "ID_ZNACZENIE")
-    private Importance importance;
+    @Column(name = "ID_ZNACZENIE")
+    private Integer importance;
 
     public NounVar() {
         // KONSTRUKTOR DOMYŚLNY
@@ -153,20 +147,20 @@ public class NounVar implements Serializable, Cloneable {
         this.noPlural = noPlural;
     }
 
-    public List<CasesVar> getCasesVars() {
-        return casesVar;
-    }
-
-    public void setCasesVars(List<CasesVar> casesVars) {
-        this.casesVar = casesVars;
-    }
-
-    public Importance getImportance() {
+    public Integer getImportance() {
         return importance;
     }
 
-    public void setImportance(Importance importance) {
+    public void setImportance(Integer importance) {
         this.importance = importance;
+    }
+
+    public List<CasesVar> getCasesVar() {
+        return casesVar;
+    }
+
+    public void setCasesVar(List<CasesVar> casesVar) {
+        this.casesVar = casesVar;
     }
 
     public void addCasesVar(CasesVar var) {
@@ -178,19 +172,19 @@ public class NounVar implements Serializable, Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        NounVar that = (NounVar) o;
+        NounVar nounVar = (NounVar) o;
 
-        if (noPlural != null ? !noPlural.equals(that.noPlural) : that.noPlural != null) return false;
-        if (noSingular != null ? !noSingular.equals(that.noSingular) : that.noSingular != null)
-            return false;
-        if (secondGender != that.secondGender) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (numeration != null ? !numeration.equals(that.numeration) : that.numeration != null) return false;
-        if (varietyAble != null ? !varietyAble.equals(that.varietyAble) : that.varietyAble != null) return false;
-        if (casesVar != null ? !casesVar.equals(that.casesVar) : that.casesVar != null) return false;
-        if (gender != that.gender) return false;
-        return !(topic != null ? !topic.equals(that.topic) : that.topic != null);
+        if (gender != nounVar.gender) return false;
+        if (id != null ? !id.equals(nounVar.id) : nounVar.id != null) return false;
+        if (importance != null ? !importance.equals(nounVar.importance) : nounVar.importance != null) return false;
+        if (noPlural != null ? !noPlural.equals(nounVar.noPlural) : nounVar.noPlural != null) return false;
+        if (noSingular != null ? !noSingular.equals(nounVar.noSingular) : nounVar.noSingular != null) return false;
+        if (numeration != null ? !numeration.equals(nounVar.numeration) : nounVar.numeration != null) return false;
+        if (secondGender != nounVar.secondGender) return false;
+        if (topic != null ? !topic.equals(nounVar.topic) : nounVar.topic != null) return false;
+        if (varietyAble != null ? !varietyAble.equals(nounVar.varietyAble) : nounVar.varietyAble != null) return false;
 
+        return true;
     }
 
     @Override
@@ -203,12 +197,23 @@ public class NounVar implements Serializable, Cloneable {
         result = 31 * result + (varietyAble != null ? varietyAble.hashCode() : 0);
         result = 31 * result + (noSingular != null ? noSingular.hashCode() : 0);
         result = 31 * result + (noPlural != null ? noPlural.hashCode() : 0);
-        result = 31 * result + (casesVar != null ? casesVar.hashCode() : 0);
+        result = 31 * result + (importance != null ? importance.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "NounVar {" + "CasesVar=" + casesVar + ", noPlural=" + noPlural + ", noSingular=" + noSingular + ", varietyAble=" + varietyAble + ", secondGender=" + secondGender + ", gender=" + gender + ", topic='" + topic + '\'' + ", numeration=" + numeration + ", id=" + id + '}';
+        final StringBuffer sb = new StringBuffer("NounVar{");
+        sb.append("id=").append(id);
+        sb.append(", numeration=").append(numeration);
+        sb.append(", topic='").append(topic).append('\'');
+        sb.append(", gender=").append(gender);
+        sb.append(", secondGender=").append(secondGender);
+        sb.append(", varietyAble=").append(varietyAble);
+        sb.append(", noSingular=").append(noSingular);
+        sb.append(", noPlural=").append(noPlural);
+        sb.append(", importance=").append(importance);
+        sb.append('}');
+        return sb.toString();
     }
 }
