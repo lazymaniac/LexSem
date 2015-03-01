@@ -1,6 +1,6 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.enums.NumeralType;
 import pl.semantyk.wikiparser.WikiNumeration;
 
@@ -22,6 +22,10 @@ public class NumeralVar implements Serializable, Cloneable {
 
 	public NumeralVar(WikiNumeration numeration) {
 		this.numeration = numeration;
+	}
+
+	public NumeralVar(NumeralVar numeralVar) {
+		//TODO implements
 	}
 
 	public Integer getId() {

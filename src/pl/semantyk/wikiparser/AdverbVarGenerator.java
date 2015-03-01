@@ -7,7 +7,7 @@ import pl.semantyk.domain.WikiUnit;
 import pl.semantyk.utils.AdverbGraduationForm;
 
 /**
- * Źródło Wikisłownik:
+ * Source: Wiktionary PL
  *
  * Stopniowanie przysłówków[edytuj]
  *
@@ -37,7 +37,7 @@ public class AdverbVarGenerator {
 	private final AdverbGraduationForm form = new AdverbGraduationForm();
 
 	public AdverbVar generate(final WikiUnit tempUnit) {
-		AdverbVar result = null;
+		AdverbVar result;
 
 		String word = tempUnit.getName();
 
@@ -53,8 +53,6 @@ public class AdverbVarGenerator {
 				String topic = word.substring(0, endOfTopic);
 				result.setHigherDegree(topic + replacement);
 				result.setHighestDegree(PREFIX_HIGEHST + topic + replacement);
-				result.setMoreHigherDegree(HIGHER_DEF + word);
-				result.setMoreHighestDegree(HIGHEST_DEF + word);
 				break;
 			}
 		}
@@ -69,41 +67,30 @@ public class AdverbVarGenerator {
 			exception = new AdverbVar();
 			exception.setHigherDegree(EXCEPTION_1_2);
 			exception.setHighestDegree(EXCEPTION_1_3);
-			exception.setMoreHigherDegree(HIGHER_DEF + EXCEPTION_1_1);
-			exception.setMoreHighestDegree(HIGHEST_DEF + EXCEPTION_1_1);
 		}
 
 		if (word.equalsIgnoreCase(EXCEPTION_2_1)) {
 			exception = new AdverbVar();
 			exception.setHigherDegree(EXCEPTION_2_2);
 			exception.setHighestDegree(EXCEPTION_2_3);
-			exception.setMoreHigherDegree(HIGHER_DEF + EXCEPTION_2_1);
-			exception.setMoreHighestDegree(HIGHEST_DEF + EXCEPTION_2_1);
 		}
 
 		if (word.equalsIgnoreCase(EXCEPTION_3_1)) {
 			exception = new AdverbVar();
 			exception.setHigherDegree(EXCEPTION_3_2);
 			exception.setHighestDegree(EXCEPTION_3_3);
-			exception.setMoreHigherDegree(HIGHER_DEF + EXCEPTION_3_1);
-			exception.setMoreHighestDegree(HIGHEST_DEF + EXCEPTION_3_1);
 		}
 
 		if (word.equalsIgnoreCase(EXCEPTION_4_1)) {
 			exception = new AdverbVar();
 			exception.setHigherDegree(EXCEPTION_4_2);
 			exception.setHighestDegree(EXCEPTION_4_3);
-			exception.setMoreHigherDegree(HIGHER_DEF + EXCEPTION_4_1);
-			exception.setMoreHighestDegree(HIGHEST_DEF + EXCEPTION_4_1);
 		}
 
 		return exception;
 	}
 
 	private final String PREFIX_HIGEHST = "naj";
-
-	private final String HIGHER_DEF = "bardziej ";
-	private final String HIGHEST_DEF = "najbardziej ";
 
 	private final String EXCEPTION_1_1 = "dobrze";
 	private final String EXCEPTION_1_2 = "lepiej";

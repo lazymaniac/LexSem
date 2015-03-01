@@ -28,7 +28,7 @@ public class AbstractWikiParserTest {
             PartOfSpeech cm1 = new PartOfSpeech();
             cm1.setId(i);
             cm1.setPartOfSpeech("czasownik");
-            cm1.setWikiUnit(jw);
+            cm1.setWikiUnit(jw.getId());
             cm1.setImportances(createZnaczenie(i));
             result.add(cm1);
         }

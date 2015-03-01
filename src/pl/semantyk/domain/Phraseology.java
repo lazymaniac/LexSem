@@ -1,6 +1,6 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -30,8 +30,7 @@ public class Phraseology implements Serializable, Cloneable {
         this.phraseology = phraseology;
     }
 
-    public Phraseology(Integer id, String phraseology, Integer importance) {
-        this.id = id;
+    public Phraseology(String phraseology, Integer importance) {
         this.phraseology = phraseology;
         this.importance = importance;
     }

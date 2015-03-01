@@ -23,12 +23,33 @@ package pl.semantyk.enums;
  */
 public enum NounGender {
 
-    MESKI,
-    MESKOOSOBOWY,
-    MESKOZYWOTNY,
-    MESKONIEZYWOTNY,
-    ZENSKI,
-    NIJAKI,
-    NIEMESKOOSBOWY
+    MESKI ("meski"),
+    MESKOOSOBOWY ("meskoosobowy"),
+    MESKOZYWOTNY ("meskozywotny"),
+    MESKONIEZYWOTNY ("meskoniezywotny"),
+    ZENSKI ("zenski"),
+    NIJAKI ("nijaki"),
+    NIEMESKOOSBOWY ("niemeskoosobowy"),
+    EMPTY ("empty");
 
+    NounGender (String type) {
+        this.type = type;
+    }
+
+    private final String type;
+
+    public final String getValue() {
+        return type;
+    }
+
+    public static NounGender enumOf(String text) {
+        if (text != null) {
+            for (NounGender val : NounGender.values()) {
+                if (text.equalsIgnoreCase(val.getValue())) {
+                    return val;
+                }
+            }
+        }
+        return null;
+    }
 }

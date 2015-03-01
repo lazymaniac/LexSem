@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -30,8 +30,19 @@ public class AdjectiveDegreeVar implements Serializable, Cloneable {
 	@Column(name = "ID_PRZYM_ODM")
 	private Integer adjectiveVarId;
 
-	public AdjectiveDegreeVar(final AdjectiveDegree stopien) {
-		degree = stopien;
+	public AdjectiveDegreeVar(AdjectiveDegreeVar adjectiveDegreeVar) {
+		this.degree = adjectiveDegreeVar.getDegree();
+		this.adjectiveVarId = adjectiveDegreeVar.getAdjectiveVarId();
+
+		for (CasesVar cv: adjectiveDegreeVar.getCasesVar()) {
+			CasesVar cloned = new CasesVar(cv);
+			cloned.setAdjectiveDegreeVar(this.getId());
+			casesVar.add(cloned);
+		}
+	}
+
+	public AdjectiveDegreeVar(final AdjectiveDegree degree) {
+		this.degree = degree;
 	}
 
 	public AdjectiveDegreeVar() {

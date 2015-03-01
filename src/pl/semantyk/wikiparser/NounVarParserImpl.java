@@ -18,16 +18,16 @@ public class NounVarParserImpl<T> implements VarietyParser<T> {
     @SuppressWarnings("unchecked")
     @Override
     public T parse(WikiUnit tempUnit, List<String> data) {
-        NounVar rzeczOdm = new NounVar();
-        boolean prostaOdm = false;
+        NounVar nounVar = new NounVar();
+        boolean simpleVar = false;
 
         if (data.isEmpty()) { // SPRAWDŹ CZY JEST ODMIANA.
-            return (T) rzeczOdm;
+            return (T) nounVar;
         }
 
         for (String s : data) { // SPRAWDŹ TYP SZABLONU.
             if (s.contains("Mianownik")) {
-                prostaOdm = true;
+                simpleVar = true;
                 break;
             }
         }
@@ -41,18 +41,18 @@ public class NounVarParserImpl<T> implements VarietyParser<T> {
 
         for (String s : data) { // SPRAWDŹ CZY JEST NIEODMIENIALNY.
             if (s.contains("{{nieodm}}")) {
-                rzeczOdm.setVarietyAble(false);
-                return (T) rzeczOdm;
+                nounVar.setVarietyAble(false);
+                return (T) nounVar;
             }
         }
 
-        if (prostaOdm) { // WYLISTOWANA ODMIANA.
-            CasesVar lp = parsujProstaOdmiane(rzeczOdm, data, NumberType.SINGULAR);
+        if (simpleVar) { // WYLISTOWANA ODMIANA.
+            CasesVar lp = parseSimpleVar(nounVar, data, NumberType.SINGULAR);
             lp.setTyp(CasesType.NOUN_SING);
-            CasesVar lm = parsujProstaOdmiane(rzeczOdm, data, NumberType.PLURAL);
+            CasesVar lm = parseSimpleVar(nounVar, data, NumberType.PLURAL);
             lm.setTyp(CasesType.NOUN_PLUR);
-            rzeczOdm.addCasesVar(lp);
-            rzeczOdm.addCasesVar(lm);
+            nounVar.addCasesVar(lp);
+            nounVar.addCasesVar(lm);
 
         } else { // ODMIANA Z KOŃCÓWKAMI
             boolean brakLP = false;
@@ -75,140 +75,140 @@ public class NounVarParserImpl<T> implements VarietyParser<T> {
                         splited[0] = line;
                     }
 
-                    String liczbaPoj = "";
-                    String liczbaMn = "";
+                    String singular = "";
+                    String plural = "";
                     if (splited.length > 0) {
-                        liczbaPoj = splited[0];
+                        singular = splited[0];
                     }
                     if (splited.length > 1) {
-                        liczbaMn = splited[1];
+                        plural = splited[1];
                     }
 
-                    String[] liczbaPojSplited = liczbaPoj.split("\\s");
-                    String[] liczbaMnSplited = liczbaMn.split("\\s");
+                    String[] singularSplited = singular.split("\\s");
+                    String[] pluralSplited = plural.split("\\s");
 
                     int begLP = -1;
                     int begLM = -1;
 
-                    for (int i = 0; i < liczbaPojSplited.length; i++) {
-                        if (liczbaPojSplited[i].contains("{{przypadki}}")) { // WYZANCZ INDEKS POCZATKOWY ODMIANY LICZBY
+                    for (int i = 0; i < singularSplited.length; i++) {
+                        if (singularSplited[i].contains("{{przypadki}}")) { // WYZANCZ INDEKS POCZATKOWY ODMIANY LICZBY
                             // POJEDYNCZEJ.
                             begLP = i;
                             break;
                         }
-                        if (liczbaPojSplited[i].contains("{{blp}}")) { // BRAK ODMIANY LICZBY POJEDYCZNEJ.
+                        if (singularSplited[i].contains("{{blp}}")) { // BRAK ODMIANY LICZBY POJEDYCZNEJ.
                             brakLP = true;
-                            rzeczOdm.setNoSingular(brakLP);
+                            nounVar.setNoSingular(brakLP);
                             break;
                         }
                     }
 
-                    for (int i = 0; i < liczbaMnSplited.length; i++) {
-                        if (liczbaMnSplited[i].contains("{{przypadki}}")) { // WYZNACZ INDEKS POCZĄTKOWY ODMIANY LICZBY
+                    for (int i = 0; i < pluralSplited.length; i++) {
+                        if (pluralSplited[i].contains("{{przypadki}}")) { // WYZNACZ INDEKS POCZĄTKOWY ODMIANY LICZBY
                             // MNOGIEJ.
                             begLM = i;
                             break;
                         }
-                        if (liczbaMnSplited[i].contains("{{blm}}")) { // BRAK ODMIANY LICZBY MNOGIEJ.
+                        if (pluralSplited[i].contains("{{blm}}")) { // BRAK ODMIANY LICZBY MNOGIEJ.
                             brakLM = true;
-                            rzeczOdm.setNoPlural(brakLM);
+                            nounVar.setNoPlural(brakLM);
                             break;
                         }
                     }
 
                     if (!brakLP) {
-                        CasesVar lp = parsujOdmianeZKoncowkami(rzeczOdm, liczbaMnSplited, begLP, NumberType.SINGULAR);
+                        CasesVar lp = parseVarWithPostfix(nounVar, pluralSplited, begLP, NumberType.SINGULAR);
                         lp.setTyp(CasesType.NOUN_SING);
-                        rzeczOdm.addCasesVar(lp);
+                        nounVar.addCasesVar(lp);
                     }
 
                     if (!brakLM) {
-                        CasesVar lm = parsujOdmianeZKoncowkami(rzeczOdm, liczbaMnSplited, begLM, NumberType.PLURAL);
+                        CasesVar lm = parseVarWithPostfix(nounVar, pluralSplited, begLM, NumberType.PLURAL);
                         lm.setTyp(CasesType.NOUN_PLUR);
-                        rzeczOdm.addCasesVar(lm);
+                        nounVar.addCasesVar(lm);
                     }
                 }
             }
         }
 
-        // print ("Rzeczownik odmiana: " + rzeczOdm.toString());
-        return (T) rzeczOdm;
+        // print ("Rzeczownik odmiana: " + nounVar.toString());
+        return (T) nounVar;
     }
 
-    private CasesVar parsujProstaOdmiane(NounVar rzeczOdm, List<String> data, NumberType liczba) {
-        CasesVar przypadki = new CasesVar();
+    private CasesVar parseSimpleVar(NounVar nounVar, List<String> data, NumberType numberType) {
+        CasesVar casesVar = new CasesVar();
 
-        przypadki.setNounVar(rzeczOdm.getId());
+        casesVar.setNounVar(nounVar.getId());
 
         for (String s : data) {
-            if (s.startsWith("|Mianownik " + liczba.getValue())) {
+            if (s.startsWith("|Mianownik " + numberType.getValue())) {
                 if (getStringAfterEqual(s).equals("")) { // sparwdz czy nie ma liczby pojedynczej
-                    if (liczba.equals(NumberType.SINGULAR)) {
-                        rzeczOdm.setNoSingular(true);
+                    if (numberType.equals(NumberType.SINGULAR)) {
+                        nounVar.setNoSingular(true);
                     }
-                    if (liczba.equals(NumberType.PLURAL)) {
-                        rzeczOdm.setNoPlural(true);
+                    if (numberType.equals(NumberType.PLURAL)) {
+                        nounVar.setNoPlural(true);
                     }
                 }
-                przypadki.setMianownik(getStringAfterEqual(s));
+                casesVar.setMianownik(getStringAfterEqual(s));
             }
-            if (s.startsWith("|Dopełniacz " + liczba.getValue())) {
-                przypadki.setDopelniacz(removeReferences(getStringAfterEqual(s)));
+            if (s.startsWith("|Dopełniacz " + numberType.getValue())) {
+                casesVar.setDopelniacz(removeReferences(getStringAfterEqual(s)));
             }
-            if (s.startsWith("|Celownik " + liczba.getValue())) {
-                przypadki.setCelownik(removeReferences(getStringAfterEqual(s)));
+            if (s.startsWith("|Celownik " + numberType.getValue())) {
+                casesVar.setCelownik(removeReferences(getStringAfterEqual(s)));
             }
-            if (s.startsWith("|Biernik " + liczba.getValue())) {
-                przypadki.setBiernik(removeReferences(getStringAfterEqual(s)));
+            if (s.startsWith("|Biernik " + numberType.getValue())) {
+                casesVar.setBiernik(removeReferences(getStringAfterEqual(s)));
             }
-            if (s.startsWith("|Narzędnik " + liczba.getValue())) {
-                przypadki.setNarzednik(removeReferences(getStringAfterEqual(s)));
+            if (s.startsWith("|Narzędnik " + numberType.getValue())) {
+                casesVar.setNarzednik(removeReferences(getStringAfterEqual(s)));
             }
-            if (s.startsWith("|Miejscownik " + liczba.getValue())) {
-                przypadki.setMiejscownik(removeReferences(getStringAfterEqual(s)));
+            if (s.startsWith("|Miejscownik " + numberType.getValue())) {
+                casesVar.setMiejscownik(removeReferences(getStringAfterEqual(s)));
             }
-            if (s.startsWith("|Wołacz " + liczba.getValue())) {
-                przypadki.setWolacz(removeReferences(getStringAfterEqual(s)));
+            if (s.startsWith("|Wołacz " + numberType.getValue())) {
+                casesVar.setWolacz(removeReferences(getStringAfterEqual(s)));
             }
         }
-        return przypadki;
+        return casesVar;
     }
 
-    private CasesVar parsujOdmianeZKoncowkami(NounVar rzeczOdm, String[] data, int begIdx, NumberType liczba) {
+    private CasesVar parseVarWithPostfix(NounVar nounVar, String[] data, int begIdx, NumberType numberType) {
 
-        CasesVar przypadki = new CasesVar();
+        CasesVar casesVar = new CasesVar();
 
-        przypadki.setNounVar(rzeczOdm.getId());
+        casesVar.setNounVar(nounVar.getId());
 
-        String temat = "";
+        String topic = "";
         if (data[begIdx + 1].equals("jak")) {
-            return przypadki; // TODO kopiowanie odmiany w przypadku gdy jest ona odnosnikiem do innego wiersza.
+            return casesVar; // TODO kopiowanie odmiany w przypadku gdy jest ona odnosnikiem do innego wiersza.
         }
 
-        if (liczba.equals(NumberType.SINGULAR)) {
+        if (numberType.equals(NumberType.SINGULAR)) {
             // MIANOWNIK I TEMAT
             if (data.length > (begIdx + 1) && data[begIdx + 1].contains("|")) {
                 String[] temp = data[begIdx + 1].split("\\|");
-                temat = temp[0];
-                przypadki.setMianownik(removeReferences(temat + temp[1])); // mianownik temat + koncowka po |
-                rzeczOdm.setTopic(temat);
+                topic = temp[0];
+                casesVar.setMianownik(removeReferences(topic + temp[1])); // mianownik topic + koncowka po |
+                nounVar.setTopic(topic);
             } else if (data.length > (begIdx + 1)) {
-                temat = data[begIdx + 1];
-                rzeczOdm.setTopic(temat);
+                topic = data[begIdx + 1];
+                nounVar.setTopic(topic);
             }
         }
 
-        if (liczba.equals(NumberType.PLURAL)) {
+        if (numberType.equals(NumberType.PLURAL)) {
             // MIANOWNIK I TEMAT
             if (data[begIdx + 1].contains("|")) {
                 String[] temp = data[begIdx + 1].split("\\|");
-                temat = temp[0];
-                przypadki.setMianownik(removeReferences(temat + temp[1]));
+                topic = temp[0];
+                casesVar.setMianownik(removeReferences(topic + temp[1]));
             }
             // MIANOWNIK I TEMAT
             if (data[begIdx + 1].contains("~")) {
-                temat = rzeczOdm.getTopic();
-                przypadki.setMianownik(removeReferences(temat + data[begIdx + 1].replace("~", "")));
+                topic = nounVar.getTopic();
+                casesVar.setMianownik(removeReferences(topic + data[begIdx + 1].replace("~", "")));
             }
         }
 
@@ -216,57 +216,57 @@ public class NounVarParserImpl<T> implements VarietyParser<T> {
         String koncowka;
         if (data.length > (begIdx + 2) && data[begIdx + 2].contains("~")) {
             koncowka = data[begIdx + 2].replace("~", "");
-            przypadki.setDopelniacz(temat + koncowka);
+            casesVar.setDopelniacz(topic + koncowka);
         } else if (data.length > (begIdx + 2)) {
-            przypadki.setDopelniacz(data[begIdx + 2]);
+            casesVar.setDopelniacz(data[begIdx + 2]);
         }
 
         // CELOWNIK
         koncowka = "";
         if (data.length > (begIdx + 3) && data[begIdx + 3].contains("~")) {
             koncowka = data[begIdx + 3].replace("~", "");
-            przypadki.setCelownik(removeReferences(temat + koncowka));
+            casesVar.setCelownik(removeReferences(topic + koncowka));
         } else if (data.length > (begIdx + 3)) {
-            przypadki.setCelownik(removeReferences(data[begIdx + 3]));
+            casesVar.setCelownik(removeReferences(data[begIdx + 3]));
         }
 
         // BIERNIK
         koncowka = "";
         if (data.length > (begIdx + 4) && data[begIdx + 4].contains("~")) {
             koncowka = data[begIdx + 4].replace("~", "");
-            przypadki.setBiernik(removeReferences(temat + koncowka));
+            casesVar.setBiernik(removeReferences(topic + koncowka));
         } else if (data.length > (begIdx + 4)) {
-            przypadki.setBiernik(removeReferences(data[begIdx + 4]));
+            casesVar.setBiernik(removeReferences(data[begIdx + 4]));
         }
 
         // NARZĘDNIK
         koncowka = "";
         if (data.length > (begIdx + 5) && data[begIdx + 5].contains("~")) {
             koncowka = data[begIdx + 5].replace("~", "");
-            przypadki.setNarzednik(removeReferences(temat + koncowka));
+            casesVar.setNarzednik(removeReferences(topic + koncowka));
         } else if (data.length > (begIdx + 5)) {
-            przypadki.setNarzednik(removeReferences(data[begIdx + 5]));
+            casesVar.setNarzednik(removeReferences(data[begIdx + 5]));
         }
 
         // MIEJSCOWNIK
         koncowka = "";
         if (data.length > (begIdx + 6) && data[begIdx + 6].contains("~")) {
             koncowka = data[begIdx + 6].replace("~", "");
-            przypadki.setMiejscownik(removeReferences(temat + koncowka));
+            casesVar.setMiejscownik(removeReferences(topic + koncowka));
         } else if (data.length > (begIdx + 6)) {
-            przypadki.setMiejscownik(removeReferences(data[begIdx + 6]));
+            casesVar.setMiejscownik(removeReferences(data[begIdx + 6]));
         }
 
         // WOŁACZ
         koncowka = "";
         if (data.length > (begIdx + 7) && data[begIdx + 7].contains("~")) {
             koncowka = data[begIdx + 7].replace("~", "");
-            przypadki.setWolacz(removeReferences(temat + koncowka));
+            casesVar.setWolacz(removeReferences(topic + koncowka));
         } else if (data.length > (begIdx + 7)) {
-            przypadki.setWolacz(removeReferences(data[begIdx + 7]));
+            casesVar.setWolacz(removeReferences(data[begIdx + 7]));
         }
 
-        return przypadki;
+        return casesVar;
 
     }
 

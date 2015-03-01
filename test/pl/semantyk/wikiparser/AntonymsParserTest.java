@@ -18,8 +18,10 @@ public class AntonymsParserTest extends AbstractWikiParserTest {
 
 	private List<String> emptySet;
 
-	private final String[] data = new String[] { "{{antonimy}}",
-			": (1.1) [[kot]]", ": (1.2) [[suka]]" };
+	private final String[] data = new String[] {
+            "{{antonimy}}",
+			": (1.1) [[dom]]",
+            ": (1.2) [[mieszkanie]]" };
 
 	private final String[] empty = new String[] { "{{antonimy}}" };
 

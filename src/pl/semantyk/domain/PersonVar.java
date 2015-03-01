@@ -1,6 +1,6 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -46,6 +46,16 @@ public class PersonVar implements Serializable, Cloneable {
         this.varType = type;
     }
 
+    public PersonVar(PersonVar personVar) {
+        this.varType = personVar.getVarType();
+        this.per1sin = personVar.getPer1Sin();
+        this.per2sin = personVar.getPer2Sin();
+        this.per3sin = personVar.getPer3Sin();
+        this.per1plu = personVar.getPer1Plu();
+        this.per2plu = personVar.getPer2Plu();
+        this.per3plu = personVar.getPer3Plu();
+        this.verbVar = personVar.getVerbVar();
+    }
 
     public PersonVar() {
 	}

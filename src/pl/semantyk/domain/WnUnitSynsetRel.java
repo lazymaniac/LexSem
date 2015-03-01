@@ -1,13 +1,19 @@
 package pl.semantyk.domain;
 
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Table;
+
 import java.io.Serializable;
 
+@Table(name = "jedn_wn_syn_rel")
 public class WnUnitSynsetRel implements Serializable {
 
 	private static final long serialVersionUID = -7965865793311335462L;
 
+	@Column(name = "id_synset")
 	private Integer synsetId;
 
+	@Column(name = "id_jedn_wn")
 	private Integer wnUnitId;
 
 	public WnUnitSynsetRel() {

@@ -315,23 +315,102 @@ public class VerbVarParserImpl<T> implements VarietyParser<T> {
 			if (type.equals("brakzaprzeszłego")) {
 			}
 		}
-		verbVar.addPersonVar(czasTeraz);
-		verbVar.addPersonVar(czasPrzeszlyM);
-		verbVar.addPersonVar(czasPrzeszlyF);
-		verbVar.addPersonVar(czasPrzeszlyN);
-		verbVar.addPersonVar(czasPrzyszlyM);
-		verbVar.addPersonVar(czasPrzyszlyF);
-		verbVar.addPersonVar(czasPrzyszlyN);
-		verbVar.addPersonVar(trybRozkaz);
-		verbVar.addPersonVar(trybPrzypM);
-		verbVar.addPersonVar(trybPrzypN);
-		verbVar.addPersonVar(trybPrzypF);
-		verbVar.addPersonVar(imiesPrzymCzynnyM);
-		verbVar.addPersonVar(imiesPrzymCzynnyF);
-		verbVar.addPersonVar(imiesPrzymCzynnyN);
-		verbVar.addPersonVar(imiesPrzymBiernyM);
-		verbVar.addPersonVar(imiesPrzymBiernyF);
-		verbVar.addPersonVar(imiesPrzymBiernyN);
+		if (varNotEmpty(czasTeraz)) {
+			czasTeraz.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(czasTeraz);
+		}
+
+		if (varNotEmpty(czasPrzeszlyM)) {
+			czasPrzeszlyM.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(czasPrzeszlyM);
+		}
+
+		if (varNotEmpty(czasPrzeszlyF)) {
+			czasPrzeszlyF.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(czasPrzeszlyF);
+		}
+
+		if (varNotEmpty(czasPrzeszlyN)) {
+			czasPrzeszlyN.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(czasPrzeszlyN);
+		}
+
+		if (varNotEmpty(czasPrzyszlyM)) {
+			czasPrzyszlyM.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(czasPrzyszlyM);
+		}
+
+		if (varNotEmpty(czasPrzyszlyF)) {
+			czasPrzyszlyF.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(czasPrzyszlyF);
+		}
+
+		if (varNotEmpty(czasPrzyszlyN)) {
+			czasPrzyszlyN.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(czasPrzyszlyN);
+		}
+
+		if (varNotEmpty(trybRozkaz)) {
+			trybRozkaz.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(trybRozkaz);
+		}
+
+		if (varNotEmpty(trybPrzypM)) {
+			trybPrzypM.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(trybPrzypM);
+		}
+
+		if (varNotEmpty(trybPrzypN)) {
+			trybPrzypN.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(trybPrzypN);
+		}
+
+		if (varNotEmpty(trybPrzypF)) {
+			trybPrzypF.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(trybPrzypF);
+		}
+
+		if (varNotEmpty(imiesPrzymCzynnyM)) {
+			imiesPrzymCzynnyM.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(imiesPrzymCzynnyM);
+		}
+
+		if (varNotEmpty(imiesPrzymCzynnyF)) {
+			imiesPrzymCzynnyF.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(imiesPrzymCzynnyF);
+		}
+
+		if (varNotEmpty(imiesPrzymCzynnyN)) {
+			imiesPrzymCzynnyN.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(imiesPrzymCzynnyN);
+		}
+
+		if (varNotEmpty(imiesPrzymBiernyM)) {
+			imiesPrzymBiernyM.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(imiesPrzymBiernyM);
+		}
+
+		if (varNotEmpty(imiesPrzymBiernyF)) {
+			imiesPrzymBiernyF.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(imiesPrzymBiernyF);
+		}
+
+		if (varNotEmpty(imiesPrzymBiernyN)) {
+			imiesPrzymBiernyN.setVerbVar(verbVar.getId());
+			verbVar.addPersonVar(imiesPrzymBiernyN);
+		}
+	}
+
+	private boolean varNotEmpty(PersonVar var) {
+		if (var.getPer1Plu() != null ||
+				var.getPer1Sin() != null ||
+				var.getPer2Plu() != null ||
+				var.getPer3Plu() != null ||
+				var.getPer2Sin() != null ||
+				var.getPer3Plu() != null)
+		return true;
+			else
+		return false;
 	}
 
 }

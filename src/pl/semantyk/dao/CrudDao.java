@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -152,13 +153,7 @@ public class CrudDao<T> extends AbstractDao {
         }
     }
 
-    public void persistAll(Set<T> entities) throws SystemException {
-        for (T entity: entities) {
-            persist(entity);
-        }
-    }
-
-    public void persistAll(List<T> entities) throws SystemException {
+    public void persistAll(Collection<T> entities) throws SystemException {
         Connection connection = ConnectionProvider.getConnection();
         PreparedStatement statement = null;
 
@@ -170,7 +165,8 @@ public class CrudDao<T> extends AbstractDao {
                 statement.execute();
             }
         } catch (SQLException ex) {
-            throw new SystemException("SQL Exception", ex, SQL_EXCEPTION);
+            System.out.println(ex + " \n " + entities);
+            //throw new SystemException("SQL Exception", ex, SQL_EXCEPTION);
         } catch (IllegalAccessException e) {
             throw new SystemException("Illegal Access Exception", e, ILLEGAL_ACCESS_EXCEPTION);
         } catch (NoSuchMethodException | InvocationTargetException e) {
@@ -184,6 +180,7 @@ public class CrudDao<T> extends AbstractDao {
             }
         }
     }
+
 
     public String getType() {
         return this.clazz.getSimpleName();

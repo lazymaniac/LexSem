@@ -2,7 +2,7 @@ package pl.semantyk.domain;
 
 import java.io.Serializable;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -21,6 +21,9 @@ public class AdverbVar implements Serializable, Cloneable {
 	@Column(name = "STOP_WYZSZY")
 	private String higherDegree;
 
+	@Column(name = "STOP_NAJWYZSZY")
+	private String highestDegree;
+
 	@Column(name = "ID_ZNACZENIE")
 	private Integer importance;
 
@@ -29,6 +32,13 @@ public class AdverbVar implements Serializable, Cloneable {
 	}
 
 	public AdverbVar() {
+	}
+
+	public AdverbVar(AdverbVar adverbVar) {
+		this.numeration = adverbVar.getNumeration();
+		this.higherDegree = adverbVar.getHigherDegree();
+		this.highestDegree = adverbVar.getHighestDegree();
+		this.importance = adverbVar.getImportance();
 	}
 
 	public Integer getId() {
@@ -47,10 +57,6 @@ public class AdverbVar implements Serializable, Cloneable {
 		this.numeration = numeration;
 	}
 
-	public String getStopienWyzszy() {
-		return higherDegree;
-	}
-
 	public void setHigherDegree(final String higherDegree) {
 		this.higherDegree = higherDegree;
 	}
@@ -67,7 +73,15 @@ public class AdverbVar implements Serializable, Cloneable {
         this.importance = importance;
     }
 
-    @Override
+	public String getHighestDegree() {
+		return highestDegree;
+	}
+
+	public void setHighestDegree(String highestDegree) {
+		this.highestDegree = highestDegree;
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (this == o) {
 			return true;
@@ -84,6 +98,10 @@ public class AdverbVar implements Serializable, Cloneable {
 		if (numeration != null ? !numeration.equals(that.numeration) : that.numeration != null) {
 			return false;
 		}
+
+		if (highestDegree != null ? !highestDegree.equals(that.highestDegree) : that.highestDegree != null) {
+			return false;
+		}
 		return !(higherDegree != null ? !higherDegree.equals(that.higherDegree) : that.higherDegree != null);
 
 	}
@@ -93,6 +111,7 @@ public class AdverbVar implements Serializable, Cloneable {
 		int result = id != null ? id.hashCode() : 0;
 		result = (31 * result) + (numeration != null ? numeration.hashCode() : 0);
 		result = (31 * result) + (higherDegree != null ? higherDegree.hashCode() : 0);
+		result = (31 * result) + (highestDegree != null ? highestDegree.hashCode() : 0);
 		return result;
 	}
 
@@ -102,8 +121,11 @@ public class AdverbVar implements Serializable, Cloneable {
         sb.append("id=").append(id);
         sb.append(", numeration=").append(numeration);
         sb.append(", higherDegree='").append(higherDegree).append('\'');
+		sb.append(", highestDegree='").append(highestDegree).append('\'');
         sb.append(", importance=").append(importance);
         sb.append('}');
         return sb.toString();
     }
+
+
 }

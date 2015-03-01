@@ -21,22 +21,18 @@ public class AdjectiveVarGeneratorTest {
 
 	@Test
 	public void genAdjVarTest() throws Exception {
-		AdjectiveVar result = objUnderTest.genAdjVar(goodData, goodData,
-				goodData);
+		AdjectiveVar result = objUnderTest.genAdjVar(goodData, goodData, goodData);
 
-		Assert.assertTrue(result.getDegree().get(0).getCasesVar().get(0)
-				.getWolacz().equals(goodData));
+		Assert.assertTrue(result.getDegree().get(0).getCasesVar().get(0).getWolacz().equals(goodData));
 
 		System.out.println(result);
 	}
 
 	@Test
 	public void genAdjVarTest2() throws Exception {
-		AdjectiveVar result = objUnderTest.genAdjVar(goodData2, goodData2,
-				goodData2);
+		AdjectiveVar result = objUnderTest.genAdjVar(goodData2, goodData2, goodData2);
 
-		Assert.assertTrue(result.getDegree().get(0).getCasesVar().get(0)
-				.getWolacz().equals(goodData2));
+		Assert.assertTrue(result.getDegree().get(0).getCasesVar().get(0).getWolacz().equals(goodData2));
 
 		System.out.println(result);
 	}

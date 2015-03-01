@@ -2,7 +2,6 @@ package pl.semantyk.test;
 
 import org.junit.Test;
 
-import pl.semantyk.utils.CommonUtils;
 import pl.semantyk.utils.StopWatch;
 import pl.semantyk.utils.WNMap;
 
@@ -25,8 +24,8 @@ public class WNMapTest {
 		}
 		putTest.stop();
 
-		CommonUtils.print("isEmpty: " + test.isEmpty() + "\n");
-		CommonUtils.print("size: " + test.size() + "\n");
+		System.out.println("isEmpty: " + test.isEmpty() + "\n");
+		System.out.println("size: " + test.size() + "\n");
 
 		StopWatch containsKeyTest = new StopWatch(this.getClass(),
 				"Contains test: " + limit + " keys");
@@ -47,8 +46,8 @@ public class WNMapTest {
 		StopWatch getLastTest = new StopWatch(this.getClass(),
 				"Get last key and value");
 		getLastTest.start();
-		CommonUtils.print("Get ostatni value key: " + test.getVal(limit));
-		CommonUtils.print("Get ostatni key value: " + test.getKey(limit));
+		System.out.println("Get ostatni value key: " + test.getVal(limit));
+		System.out.println("Get ostatni key value: " + test.getKey(limit));
 		getLastTest.stop();
 
 		StopWatch getValues = new StopWatch(this.getClass(), "Get test "

@@ -13,6 +13,6 @@ from
         join
     TYP_RELACJI type_rel ON (rel.RELACJA = type_rel.ID_TYP_RELACJI)
         join
-    (SELECT @pv:=(SELECT ID_JEDN_WN FROM JEDNOSTKA_WN WHERE nazwa = "dawać")) tmp
+    (SELECT @pv:=1000) tmp
 where
     parent.ID_JEDN_WN = @pv

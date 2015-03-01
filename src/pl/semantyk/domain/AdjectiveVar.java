@@ -1,6 +1,6 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -24,7 +24,17 @@ public class AdjectiveVar implements Serializable, Cloneable {
     @Column(name = "ID_ZNACZENIE")
     private Integer importance;
 
-    private List<AdjectiveDegreeVar> degree = new ArrayList<>();
+    private List<AdjectiveDegreeVar> degrees = new ArrayList<>();
+
+    public AdjectiveVar(AdjectiveVar adjectiveVar) {
+        this.numeration = adjectiveVar.getNumeration();
+
+        for (AdjectiveDegreeVar dg: adjectiveVar.getDegrees()) {
+            AdjectiveDegreeVar cloned = new AdjectiveDegreeVar(dg);
+            cloned.setAdjectiveVar(this.getId());
+            degrees.add(cloned);
+        }
+    }
 
     public AdjectiveVar() {
     }
@@ -57,16 +67,16 @@ public class AdjectiveVar implements Serializable, Cloneable {
         this.importance = importance;
     }
 
-    public List<AdjectiveDegreeVar> getDegree() {
-        return degree;
+    public List<AdjectiveDegreeVar> getDegrees() {
+        return degrees;
     }
 
     public void addAdjectiveDegree(AdjectiveDegreeVar var) {
-        this.degree.add(var);
+        this.degrees.add(var);
     }
 
-    public void setDegree(List<AdjectiveDegreeVar> degree) {
-        this.degree = degree;
+    public void setDegrees(List<AdjectiveDegreeVar> degrees) {
+        this.degrees = degrees;
     }
 
     @Override

@@ -47,20 +47,20 @@ public class NounVarParserTest extends AbstractWikiParserTest {
 		WikiUnit testUnit = createTestUnit();
 		NounVar nounVar = objUnderTest.parse(testUnit, longDeclination);
 		
-		assertThat(nounVar.getCasesVars().get(0).getMianownik(), is("zamek"));
-		assertThat(nounVar.getCasesVars().get(0).getDopelniacz(), is("zamku"));
-		assertThat(nounVar.getCasesVars().get(0).getCelownik(), is("zamkowi"));
-		assertThat(nounVar.getCasesVars().get(0).getBiernik(), is("zamek"));
-		assertThat(nounVar.getCasesVars().get(0).getNarzednik(), is("zamkiem"));
-		assertThat(nounVar.getCasesVars().get(0).getMiejscownik(), is("zamku"));
-		assertThat(nounVar.getCasesVars().get(0).getWolacz(), is("zamku"));
+		assertThat(nounVar.getCasesVar().get(0).getMianownik(), is("zamek"));
+		assertThat(nounVar.getCasesVar().get(0).getDopelniacz(), is("zamku"));
+		assertThat(nounVar.getCasesVar().get(0).getCelownik(), is("zamkowi"));
+		assertThat(nounVar.getCasesVar().get(0).getBiernik(), is("zamek"));
+		assertThat(nounVar.getCasesVar().get(0).getNarzednik(), is("zamkiem"));
+		assertThat(nounVar.getCasesVar().get(0).getMiejscownik(), is("zamku"));
+		assertThat(nounVar.getCasesVar().get(0).getWolacz(), is("zamku"));
 		
-		assertThat(nounVar.getCasesVars().get(1).getMianownik(), is("zamki"));
-		assertThat(nounVar.getCasesVars().get(1).getDopelniacz(), is("zamków"));
-		assertThat(nounVar.getCasesVars().get(1).getCelownik(), is("zamkom"));
-		assertThat(nounVar.getCasesVars().get(1).getBiernik(), is("zamki"));
-		assertThat(nounVar.getCasesVars().get(1).getNarzednik(), is("zamkami"));
-		assertThat(nounVar.getCasesVars().get(1).getMiejscownik(), is("zamkach"));
-		assertThat(nounVar.getCasesVars().get(1).getWolacz(), is("zamki"));
+		assertThat(nounVar.getCasesVar().get(1).getMianownik(), is("zamki"));
+		assertThat(nounVar.getCasesVar().get(1).getDopelniacz(), is("zamków"));
+		assertThat(nounVar.getCasesVar().get(1).getCelownik(), is("zamkom"));
+		assertThat(nounVar.getCasesVar().get(1).getBiernik(), is("zamki"));
+		assertThat(nounVar.getCasesVar().get(1).getNarzednik(), is("zamkami"));
+		assertThat(nounVar.getCasesVar().get(1).getMiejscownik(), is("zamkach"));
+		assertThat(nounVar.getCasesVar().get(1).getWolacz(), is("zamki"));
 	}
 }

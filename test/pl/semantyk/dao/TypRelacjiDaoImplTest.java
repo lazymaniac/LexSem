@@ -20,10 +20,10 @@ public class TypRelacjiDaoImplTest {
         entity.setDescription("opis");
         entity.setParent(2);
 
-        RelationTypeDao dao = new RelationTypeDaoImpl();
-        RelationType toRemove = dao.findById(1);
+        CrudDao dao = DaoFactory.getDaoFor(RelationType.class);
+        RelationType toRemove = (RelationType) dao.findById(1);
         if (toRemove != null)
-            dao.remove(toRemove);
-        dao.persistNative(entity);
+            dao.remove(toRemove.getId());
+        dao.persist(entity);
     }
 }

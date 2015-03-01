@@ -1,6 +1,6 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -28,9 +28,6 @@ public class Synonym implements Serializable, Cloneable {
     public Synonym(WikiNumeration numeration, String synonym) {
         this.numeration = numeration;
         this.synonym = synonym;
-    }
-
-    public Synonym() {
     }
 
     public Integer getId() {

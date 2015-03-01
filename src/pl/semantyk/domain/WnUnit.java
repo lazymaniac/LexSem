@@ -42,20 +42,20 @@ public class WnUnit implements Serializable, Cloneable {
 	 * wariant jednostki
 	 */
 	@Column(name = "WARIANT")
-	private Integer variant;
+	private Integer variant = -1;
 
 	private Set<LexicalRel> children = new HashSet<>();
 
 	private Set<LexicalRel> parents = new HashSet<>();
 
 	@Column(name = "ID_JEDN_WIKI")
-	private Integer wikiUnit;
+	private Integer wikiUnit = -1;
 
 	/**
 	 * Synset
 	 */
-	@Column(name = "ID_SYNSET")
-	private Integer synset;
+	//@Column(name = "ID_SYNSET")
+	private Integer synset = -1;
 
 	public WnUnit() {
 	}

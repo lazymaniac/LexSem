@@ -1,7 +1,7 @@
 package pl.semantyk.domain;
 
 import org.apache.commons.lang3.StringUtils;
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -108,6 +108,29 @@ public class VerbVar implements Serializable, Cloneable {
 		this.topic = topic;
 		this.conjugation = conjugation;
 		fillConjugationVariety();
+	}
+
+	public VerbVar(VerbVar verbVar) {
+		this.numeration = verbVar.getNumeration();
+		this.importance = verbVar.getImportance();
+		this.isPerfective = verbVar.getIsPerfective();
+		this.isReflexivVerb = verbVar.getIsReflexivVerb();
+		this.topic = verbVar.getTopic();
+		this.conjugation = verbVar.getConjugation();
+		this.reflexivePronoun = verbVar.getReflexivePronoun();
+		this.perfective = verbVar.getPerfective();
+		this.imperfective = verbVar.getImperfective();
+		this.inifitive = verbVar.getInifitive();
+		this.impersonalFormPast = verbVar.getImpersonalFormPast();
+		this.adverbialParticipleContemporary = verbVar.getAdverbialParticipleContemporary();
+		this.adverbialParticiplePrior = verbVar.getAdverbialParticiplePrior();
+		this.gerund = verbVar.getGerund();
+
+		for (PersonVar pv : verbVar.getPersonalVars()) {
+			PersonVar cloned = new PersonVar(pv);
+			cloned.setVerbVar(this.getId());
+			this.personVars.add(cloned);
+		}
 	}
 
 	/**

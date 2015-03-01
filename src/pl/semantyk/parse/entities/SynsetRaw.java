@@ -1,11 +1,20 @@
 package pl.semantyk.parse.entities;
 
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Id;
+import pl.semantyk.domain.annotation.Table;
+
+@Table(name = "SYNSET")
 public class SynsetRaw {
 
+	@Id
+	@Column(name = "id_synset")
 	private Integer id;
 
+	@Column(name = "podzielny")
 	private Integer split;
 
+	@Column(name = "abstract")
 	private Boolean abstractsynstet;
 
 	public SynsetRaw() {

@@ -1,20 +1,27 @@
 package pl.semantyk.parse.entities;
 
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Table;
+
+@Table(name = "relacja_leks")
 public class LexicalRelRaw {
 
     /**
      * Parent id.
      */
+    @Column(name = "rodzic")
     private Integer parent;
 
     /**
      * Children id.
      */
+    @Column(name = "dziecko")
     private Integer child;
 
     /**
      * Relation id.
      */
+    @Column(name = "relacja")
     private Integer relation;
 
     public LexicalRelRaw() {

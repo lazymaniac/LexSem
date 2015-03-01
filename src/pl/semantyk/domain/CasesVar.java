@@ -1,6 +1,6 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -42,12 +42,25 @@ public class CasesVar implements Serializable, Cloneable {
     private String wolacz;
 
     @Column(name = "ID_RZECZOWNIK_ODM")
-    private Integer nounVar;
+    private Integer nounVar = -1;
 
     @Column(name = "ID_PRZYM_ODM")
-    private Integer adjectiveDegreeVar;
+    private Integer adjectiveDegreeVar = -1;
 
     public CasesVar() {
+    }
+
+    public CasesVar(CasesVar casesVar) {
+        this.typ = casesVar.getTyp();
+        this.mianownik = casesVar.getMianownik();
+        this.dopelniacz = casesVar.getDopelniacz();
+        this.celownik = casesVar.getCelownik();
+        this.biernik = casesVar.getBiernik();
+        this.narzednik = casesVar.getNarzednik();
+        this.miejscownik = casesVar.getMiejscownik();
+        this.wolacz = casesVar.getWolacz();
+        this.nounVar = casesVar.getNounVar();
+        this.adjectiveDegreeVar = casesVar.getAdjectiveDegreeVar();
     }
 
     public CasesVar(CasesType typ) {

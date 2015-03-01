@@ -1,6 +1,6 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -28,9 +28,6 @@ public class Example implements Serializable, Cloneable {
     public Example(WikiNumeration numeration, String example) {
         this.numeration = numeration;
         this.example = example;
-    }
-
-    public Example() {
     }
 
     public Integer getId() {

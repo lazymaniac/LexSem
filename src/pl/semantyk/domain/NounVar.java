@@ -1,6 +1,6 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -42,13 +42,13 @@ public class NounVar implements Serializable, Cloneable {
      * Rodzaj rzeczownika.
      */
     @Column(name = "RODZAJ")
-    private NounGender gender;
+    private NounGender gender = NounGender.EMPTY;
 
     /**
      * 2 rodzaj rzeczownika.
      */
     @Column(name = "DRUGI_RODZAJ")
-    private NounGender secondGender;
+    private NounGender secondGender = NounGender.EMPTY;
 
     /**
      * Czy rzeczwonik jest odmienialny.
@@ -77,6 +77,22 @@ public class NounVar implements Serializable, Cloneable {
 
     public NounVar() {
         // KONSTRUKTOR DOMYŚLNY
+    }
+
+    public NounVar(NounVar nounVar) {
+        this.numeration = nounVar.getNumeration();
+        this.topic = nounVar.getTopic();
+        this.gender = nounVar.getGender();
+        this.secondGender = nounVar.getSecondGender();
+        this.varietyAble = nounVar.getVarietyAble();
+        this.noSingular = nounVar.getNoSingular();
+        this.noPlural = nounVar.getNoPlural();
+
+        for (CasesVar cv : nounVar.getCasesVar()) {
+            CasesVar cloned = new CasesVar(cv);
+            cloned.setNounVar(this.getId());
+            this.casesVar.add(cloned);
+        }
     }
 
     public NounVar(WikiNumeration numeracja) {

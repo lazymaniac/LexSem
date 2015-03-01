@@ -1,6 +1,6 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -30,8 +30,7 @@ public class Collocation implements Serializable, Cloneable {
         this.collocation = collocation;
     }
 
-    public Collocation(Integer id, String collocation, Integer importance) {
-        this.id = id;
+    public Collocation(String collocation, Integer importance) {
         this.collocation = collocation;
         this.importance = importance;
     }

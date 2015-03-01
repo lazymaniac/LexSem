@@ -1,13 +1,21 @@
 package pl.semantyk.parse.entities;
 
+import pl.semantyk.domain.annotation.Column;
+import pl.semantyk.domain.annotation.Table;
+
+@Table(name = "relacja_synsetu")
 public class SynsetRelationRaw {
 
+	@Column(name = "rodzic")
 	private Integer parent;
 
+	@Column(name = "dziecko")
 	private Integer child;
 
+	@Column(name = "relacja")
 	private Integer relation;
 
+	@Column(name = "sprawdzony")
 	private Boolean checked;
 
 	public SynsetRelationRaw() {

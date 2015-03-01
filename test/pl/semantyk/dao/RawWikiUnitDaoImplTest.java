@@ -5,8 +5,6 @@ import pl.semantyk.domain.RawWikiUnit;
 
 import java.util.Collection;
 
-import static pl.semantyk.utils.CommonUtils.print;
-
 public class RawWikiUnitDaoImplTest {
 
     @Test
@@ -16,14 +14,14 @@ public class RawWikiUnitDaoImplTest {
         rawWikiUnit.setText("test body");
         rawWikiUnit.setTitle("test title");
 
-        RawWikiUnitDao dao = new RawWikiUnitDaoImpl();
+        CrudDao dao = DaoFactory.getDaoFor(RawWikiUnit.class);
 
-        dao.persistNative(rawWikiUnit);
+        dao.persist(rawWikiUnit);
 
         Collection<RawWikiUnit> result = dao.findAll();
 
         for (RawWikiUnit entity: result) {
-            print(entity.toString());
+            System.out.println(entity.toString());
         }
 
     }

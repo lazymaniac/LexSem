@@ -54,113 +54,238 @@ public class WiktionaryToDBExporter {
     private final CrudDao personVarDao = getDaoFor(PersonVar.class);
     private final CrudDao adverbVarDao = getDaoFor(AdverbVar.class);
 
+    private WikiCollector wikiCollector;
+
     private Dictionary dictionary;
 
     public WiktionaryToDBExporter(Dictionary dictionary) {
         this.dictionary = dictionary;
+        wikiCollector = new WikiCollector(dictionary);
+        wikiCollector.collect();
     }
 
     public void exportDatabase() {
         exportWikitionary();
     }
 
+
     private void exportWikitionary() {
         StopWatch watch = new StopWatch(CrudDao.class,
                 "Persisting Wiktionary units...", TimeUnit.SECOND);
         watch.start();
         try {
-            wikiUnitDao.persistAll(dictionary.getWikiUnits());
-            for (WikiUnit unit: dictionary.getWikiUnits()) {
-                exportPartOfSpeech(unit.getPartsOfSpeech());
-            }
+            wikiUnitDao.persistAll(wikiCollector.getAllWikiUnits());
+            exportPartOfSpeech(wikiCollector.getAllPartOfSpeeches());
+            exportImportance(wikiCollector.getAllImportances());
+            exportAdverbVar(wikiCollector.getAllAdverbVars());
+            exportVerbVar(wikiCollector.getAllVerbVars());
+            exportAdjectiveVar(wikiCollector.getAllAdjectiveVars());
+            exportPronounVar(wikiCollector.getAllPronounVars());
+            exportNounVar(wikiCollector.getAllNounVars());
+            exportCognates(wikiCollector.getAllCognates());
+            exportCollocation(wikiCollector.getAllCollocations());
+            exportPhraseology(wikiCollector.getAllPhraseologies());
+            exportAntonyms(wikiCollector.getAllAntonyms());
+            exportExamples(wikiCollector.getAllExamples());
+            exportSynonyms(wikiCollector.getAllSynonyms());
+            exportAdjectiveDegreeVars(wikiCollector.getAllAdjectiveDegreeVars());
+            exportCasesVars(wikiCollector.getAllCasesVars());
+            exportPersonsVars(wikiCollector.getAllPersonVars());
         } catch (SystemException e) {
             LOG.debug(e);
-            e.printStackTrace();
+        }
+        watch.stop();
+    }
+
+    private void exportPersonsVars(List<PersonVar> allPersonVars) {
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting personal vars...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            personVarDao.persistAll(allPersonVars);
+        } catch (SystemException e) {
+            LOG.debug(e);
+        }
+        watch.stop();
+    }
+
+    private void exportCasesVars(List<CasesVar> allCasesVars) {
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting cases varieties...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            casesVarDao.persistAll(allCasesVars);
+        } catch (SystemException e) {
+            LOG.debug(e);
         }
         watch.stop();
     }
 
     private void exportPartOfSpeech(List<PartOfSpeech> partsOfSpeech) throws SystemException {
-        partOfSpeechDao.persistAll(partsOfSpeech);
-        for (PartOfSpeech entity: partsOfSpeech)
-            exportImportance(entity.getImportances());
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting parts of speech...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            partOfSpeechDao.persistAll(partsOfSpeech);
+        } catch (SystemException e) {
+            LOG.debug(e);
+        }
+        watch.stop();
     }
 
     private void exportImportance(List<Importance> importances) throws SystemException {
-        importanceDao.persistAll(importances);
-        for (Importance importance: importances) {
-            exportSynonyms(importance.getSynonyms());
-            exportExamples(importance.getExamples());
-            exportAntonyms(importance.getAntonyms());
-            exportPhraseology(importance.getPhraseology());
-            exportCollocation(importance.getCollocations());
-            exportCognates(importance.getCognates());
-            exportNounVar(importance.getNounVar());
-            exportPronounVar(importance.getPronounVars());
-            exportAdjectiveVar(importance.getAdjectiveVars());
-            exportVerbVar(importance.getVerbVars());
-            exportAdverbVar(importance.getAdverbVars());
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting importances...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            importanceDao.persistAll(importances);
+        } catch (SystemException e) {
+            LOG.debug(e);
         }
+        watch.stop();
     }
 
     private void exportAdverbVar(List<AdverbVar> adverbVars) throws SystemException {
-        adverbVarDao.persistAll(adverbVars);
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting adverb varieties...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            adverbVarDao.persistAll(adverbVars);
+        } catch (SystemException e) {
+            LOG.debug(e);
+        }
+        watch.stop();
     }
 
     private void exportVerbVar(List<VerbVar> verbVars) throws SystemException {
-        verbVarDao.persistAll(verbVars);
-        for (VerbVar verbVar: verbVars) {
-            personVarDao.persistAll(verbVar.getPersonalVars());
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting verb vars...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            verbVarDao.persistAll(verbVars);
+        } catch (SystemException e) {
+            LOG.debug(e);
         }
+        watch.stop();
     }
 
     private void exportAdjectiveVar(List<AdjectiveVar> adjectiveVars) throws SystemException {
-        adjectiveVarDao.persistAll(adjectiveVars);
-        for (AdjectiveVar adjectiveVar: adjectiveVars) {
-            adjectiveDegreeVarDao.persistAll(adjectiveVar.getDegree());
-            for (AdjectiveDegreeVar adjectiveDegreeVar: adjectiveVar.getDegree())
-                casesVarDao.persistAll(adjectiveDegreeVar.getCasesVar());
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting adjective varieties...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            adjectiveVarDao.persistAll(adjectiveVars);
+        } catch (SystemException e) {
+            LOG.debug(e);
         }
+        watch.stop();
     }
 
     private void exportPronounVar(List<PronounVar> pronounVars) throws SystemException {
-        pronounVarDao.persistAll(pronounVars);
-        for (PronounVar pronounVar: pronounVars) {
-            casesVarDao.persist(pronounVar.getCasesVar());
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting pronoun varieties...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            pronounVarDao.persistAll(pronounVars);
+        } catch (SystemException e) {
+            LOG.debug(e);
         }
+        watch.stop();
     }
 
     private void exportNounVar(List<NounVar> nounVar) throws SystemException {
-        nounVarDao.persistAll(nounVar);
-        for (NounVar entity: nounVar) {
-            casesVarDao.persistAll(entity.getCasesVar());
+        StopWatch watch = new StopWatch(CrudDao.class, "Persisting noun varieties...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            nounVarDao.persistAll(nounVar);
+        } catch (SystemException e) {
+            LOG.debug(e);
         }
+        watch.stop();
     }
 
     private void exportCognates(List<Cognate> cognates) throws SystemException {
-        cognatesDao.persistAll(cognates);
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting cognates...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            cognatesDao.persistAll(cognates);
+        } catch (SystemException e) {
+            LOG.debug(e);
+        }
+        watch.stop();
     }
 
     private void exportCollocation(List<Collocation> collocations) throws SystemException {
-        collocationDao.persistAll(collocations);
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting collocations...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            collocationDao.persistAll(collocations);
+        } catch (SystemException e) {
+            LOG.debug(e);
+        }
+        watch.stop();
     }
 
     private void exportPhraseology(List<Phraseology> phraseology) throws SystemException {
-        phraseologyDao.persistAll(phraseology);
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting phraseology...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            phraseologyDao.persistAll(phraseology);
+        } catch (SystemException e) {
+            LOG.debug(e);
+        }
+        watch.stop();
     }
 
     private void exportAntonyms(List<Antonym> antonyms) throws SystemException {
-        antonymDao.persistAll(antonyms);
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting antonyms...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            antonymDao.persistAll(antonyms);
+        } catch (SystemException e) {
+            LOG.debug(e);
+        }
+        watch.stop();
     }
 
     private void exportExamples(List<Example> examples) throws SystemException {
-        exampleDao.persistAll(examples);
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting exaples...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            exampleDao.persistAll(examples);
+        } catch (SystemException e) {
+            LOG.debug(e);
+        }
+        watch.stop();
     }
 
     private void exportSynonyms(List<Synonym> synonyms) throws SystemException {
-        synonymDao.persistAll(synonyms);
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting synonyms...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            synonymDao.persistAll(synonyms);
+        } catch (SystemException e) {
+            LOG.debug(e);
+        }
+        watch.stop();
     }
 
-
-
+    private void exportAdjectiveDegreeVars(List<AdjectiveDegreeVar> adjectiveDegreeVars) {
+        StopWatch watch = new StopWatch(CrudDao.class,
+                "Persisting adjective degree vars...", TimeUnit.SECOND);
+        watch.start();
+        try {
+            adjectiveDegreeVarDao.persistAll(adjectiveDegreeVars);
+        } catch (SystemException e) {
+            LOG.debug(e);
+        }
+        watch.stop();
+    }
+    
 }

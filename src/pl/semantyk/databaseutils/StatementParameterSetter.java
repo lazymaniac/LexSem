@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 
 /**
  * Use reflection to dynamically set parameters in PreparedStatement.
@@ -25,8 +26,12 @@ public class StatementParameterSetter {
                 field.setAccessible(true);
                 Class type = field.getType();
 
-                if (type.equals(Integer.class)) {
-                    statement.setInt(paramCounter++, (Integer) field.get(source));
+                if (type.equals(Integer.class) || type.equals(int.class)) {
+                    int i = (Integer) field.get(source);
+                    if (i > -1)
+                        statement.setInt(paramCounter++, i);
+                    else
+                        statement.setNull(paramCounter++, Types.INTEGER);
                 } else if (type.equals(Double.class)) {
                     statement.setDouble(paramCounter++, (Double) field.get(source));
                 } else if (type.equals(String.class)) {

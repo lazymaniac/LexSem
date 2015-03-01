@@ -1,6 +1,6 @@
 package pl.semantyk.domain;
 
-import pl.semantyk.dao.IdGenerator;
+import pl.semantyk.databaseutils.IdGenerator;
 import pl.semantyk.domain.annotation.Column;
 import pl.semantyk.domain.annotation.Id;
 import pl.semantyk.domain.annotation.Table;
@@ -30,6 +30,12 @@ public class Cognate implements Serializable, Cloneable {
     }
 
     public Cognate() {
+    }
+
+    public Cognate(String cognate, String partOfSpeech, Integer importance) {
+        this.cognate = cognate;
+        this.partOfSpeech = partOfSpeech;
+        this.importance = importance;
     }
 
     public Integer getId() {

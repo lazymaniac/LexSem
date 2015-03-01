@@ -20,13 +20,13 @@ public class AdjectiveVarGenerator {
     }
 
     /**
-     * Przyjmuje za argument tytuł przymiotnika konczący się na -y lub -i. W przypadku gdy stopień wyższy lub najwyższy
-     * nie są puste także je odmienia.
+     * Takes as argument title of adjective ending with -y or -i. In case when higher degree or highest aren't
+     * empty also variables them.
      *
-     * @param zeroDegree      temat jednostki kończący się na -y lub -i.
-     * @param higherDegree    stopień wyższy przymiotnika.
-     * @param highestDegree stopień najwyższy przymiotnika.
-     * @return Obiekt odmiany
+     * @param zeroDegree      topic of unit
+     * @param higherDegree    higher degree.
+     * @param highestDegree   highest degree.
+     * @return AdjectiveVar
      */
     public AdjectiveVar genAdjVar(String zeroDegree, String higherDegree, String highestDegree) {
         AdjectiveVar result = new AdjectiveVar();
@@ -59,7 +59,7 @@ public class AdjectiveVarGenerator {
             }
         }
 
-        for (AdjectiveDegreeVar stop : result.getDegree()) {
+        for (AdjectiveDegreeVar stop : result.getDegrees()) {
             stop.setAdjectiveVar(result.getId());
         }
 
